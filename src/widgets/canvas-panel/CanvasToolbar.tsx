@@ -1,21 +1,19 @@
-import { useState, useRef, useEffect, useCallback } from 'react'
-import type { MutableRefObject } from 'react'
-import type { Canvas } from 'fabric'
+import { selectConfig, selectRenderState, useStudioStore } from '@/app/store'
+import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
+import { useExport } from '@/features/export/useExport'
+import { STRINGS } from '@/shared/constants/strings'
+import { Button } from '@/shared/ui/Button'
 import {
-  IconArrowsMaximize,
   IconChevronDown,
   IconChevronUp,
   IconDownload,
-  IconSparkles,
   IconRefresh,
-  IconX,
+  IconSparkles,
+  IconX
 } from '@tabler/icons-react'
-import { Button } from '@/shared/ui/Button'
-import { useStudioStore, selectRenderState, selectConfig } from '@/app/store'
-import { useExport } from '@/features/export/useExport'
-import { STRINGS } from '@/shared/constants/strings'
-import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
-import logoUrl from '@/assets/favicon.png'
+import type { Canvas } from 'fabric'
+import type { MutableRefObject } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface CanvasToolbarProps {
   onGenerate: () => void
