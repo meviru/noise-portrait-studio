@@ -66,13 +66,7 @@ export function CanvasToolbar({
     <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-800 shrink-0 bg-neutral-950">
       {/* Left: logo + app name */}
       <div className="flex items-center gap-2.5">
-        <img
-          src={logoUrl}
-          alt=""
-          aria-hidden="true"
-          className="h-10 invert select-none pointer-events-none"
-        />
-        <span className="text-[11px] tracking-widest uppercase font-semibold text-neutral-400">
+        <span className="text-xs tracking-widest uppercase font-semibold text-neutral-400">
           Noise Portrait Studio
         </span>
       </div>
@@ -80,20 +74,17 @@ export function CanvasToolbar({
       {/* Right controls */}
       <div className="flex items-center gap-2">
         {/* Zoom */}
-        <div className="hidden sm:flex items-center gap-1">
-          <span className="text-[10px] text-neutral-600 font-mono w-9 text-right tabular-nums">
-            {zoomPct}%
-          </span>
-          <Button size="sm" variant="ghost" onClick={onFit} ariaLabel="Fit canvas to screen">
-            <IconArrowsMaximize size={14} aria-hidden="true" />
-          </Button>
-        </div>
+        <span className="text-xs text-neutral-300 w-9 text-right tabular-nums">{zoomPct}%</span>
 
         <div className="w-px h-4 bg-neutral-800 hidden sm:block" />
 
-        <span className="text-[10px] text-neutral-600 font-mono hidden sm:inline">
-          seed: {config.seed}
-        </span>
+        <Button size="sm" variant="ghost" onClick={onFit} ariaLabel="Fit canvas to screen">
+          <IconRefresh size={14} aria-hidden="true" />
+        </Button>
+
+        <div className="w-px h-4 bg-neutral-800 hidden sm:block" />
+
+        <span className="text-xs text-neutral-300 hidden sm:inline">seed: {config.seed}</span>
 
         <div className="w-px h-4 bg-neutral-800" />
 
@@ -109,9 +100,9 @@ export function CanvasToolbar({
             <IconDownload size={14} aria-hidden="true" />
             <span className="ml-1.5">{isExporting ? STRINGS.export.exporting : 'Export'}</span>
             {isExportOpen ? (
-              <IconChevronUp size={12} className="ml-1 opacity-60" aria-hidden="true" />
+              <IconChevronUp size={14} className="ml-1 mt-0.5 opacity-70" aria-hidden="true" />
             ) : (
-              <IconChevronDown size={12} className="ml-1 opacity-60" aria-hidden="true" />
+              <IconChevronDown size={14} className="ml-1 mt-0.5 opacity-70" aria-hidden="true" />
             )}
           </Button>
 
@@ -123,7 +114,6 @@ export function CanvasToolbar({
                   onClick={() => handleExport(fmt)}
                   className="w-full flex items-center gap-2 px-3 py-2 text-left text-xs text-neutral-200 hover:bg-neutral-700 transition-colors"
                 >
-                  <IconDownload size={13} className="text-neutral-500" aria-hidden="true" />
                   {STRINGS.export[fmt]}
                 </button>
               ))}
