@@ -28,7 +28,7 @@ export function Slider({ label, min, max, step, value, onChange, formatValue }: 
         aria-valuemin={min}
         aria-valuemax={max}
         aria-valuenow={value}
-        className="w-full h-1 accent-violet-600 cursor-pointer"
+        className="w-full h-1 accent-primary-600 cursor-pointer"
       />
     </div>
   )

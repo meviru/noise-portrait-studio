@@ -10,7 +10,7 @@ export default function App() {
       <Suspense
         fallback={
           <div className="flex items-center justify-center h-screen bg-neutral-950">
-            <div className="w-4 h-4 rounded-full bg-violet-600 animate-pulse" />
+            <div className="w-4 h-4 rounded-full bg-primary-600 animate-pulse" />
           </div>
         }
       >

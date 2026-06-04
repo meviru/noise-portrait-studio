@@ -42,7 +42,7 @@ export function DropZone({ onFile, isProcessing, error, hasImage, imageDataURL }
   const borderClass = error
     ? 'border-red-800'
     : isDragging
-      ? 'border-violet-500'
+      ? 'border-primary-500'
       : 'border-neutral-700'
 
   if (hasImage && imageDataURL) {
@@ -71,7 +71,7 @@ export function DropZone({ onFile, isProcessing, error, hasImage, imageDataURL }
         role="button"
         tabIndex={0}
         aria-label="Upload photo"
-        className={`w-full aspect-square rounded border-2 border-dashed ${borderClass} flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500`}
+        className={`w-full aspect-square rounded border-2 border-dashed ${borderClass} flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500`}
         onClick={openDialog}
         onKeyDown={handleKeyDown}
         onDragEnter={(e: DragEvent<HTMLDivElement>) => { e.preventDefault(); setIsDragging(true) }}
@@ -80,7 +80,7 @@ export function DropZone({ onFile, isProcessing, error, hasImage, imageDataURL }
         onDrop={handleDrop}
       >
         {isProcessing ? (
-          <div className="w-4 h-4 rounded-full border-2 border-violet-600 border-t-transparent animate-spin" />
+          <div className="w-4 h-4 rounded-full border-2 border-primary-600 border-t-transparent animate-spin" />
         ) : (
           <>
             <IconCloudUpload size={24} className="text-neutral-500" aria-hidden="true" />

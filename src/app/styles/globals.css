@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+/**
+ * Brand color scale — edit these values to retheme the entire app.
+ * Currently set to #099cff (azure blue). To shift hue: teal ~200 | green ~145 | amber ~85 | orange ~42 | violet ~293 | rose ~15
+ */
+@theme {
+  --color-primary-50:  oklch(0.971 0.012 216);
+  --color-primary-100: oklch(0.942 0.028 216);
+  --color-primary-200: oklch(0.893 0.062 216);
+  --color-primary-300: oklch(0.825 0.115 216);
+  --color-primary-400: oklch(0.748 0.162 216);
+  --color-primary-500: oklch(0.710 0.182 216);
+  --color-primary-600: oklch(0.668 0.192 216);
+  --color-primary-700: oklch(0.555 0.175 216);
+  --color-primary-800: oklch(0.448 0.140 216);
+  --color-primary-900: oklch(0.345 0.098 216);
+  --color-primary-950: oklch(0.252 0.062 216);
+}

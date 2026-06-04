@@ -15,7 +15,7 @@ export function PresetGrid() {
             className={[
               'flex flex-col gap-0.5 p-2 rounded text-left transition-colors',
               isActive
-                ? 'bg-violet-950 border border-violet-600'
+                ? 'bg-primary-950 border border-primary-600'
                 : 'bg-neutral-800 border border-neutral-700 hover:border-neutral-600',
             ].join(' ')}
           >

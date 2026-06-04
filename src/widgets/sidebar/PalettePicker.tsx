@@ -37,7 +37,7 @@ export function PalettePicker() {
             className={[
               'flex-1 py-1 rounded text-[10px] font-medium tracking-wide transition-colors',
               config.colorMode === id
-                ? 'bg-violet-700 text-white'
+                ? 'bg-primary-700 text-white'
                 : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700',
             ].join(' ')}
           >

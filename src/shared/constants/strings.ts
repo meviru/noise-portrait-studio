@@ -20,7 +20,7 @@ export const STRINGS = {
     computing: 'Computing flow field…',
     rendering: 'Rendering strokes…',
     done: 'Done',
-    error: 'Render failed — try again',
+    error: 'Render failed. Please try again.',
   },
   export: {
     svg: 'Export SVG',

@@ -22,7 +22,7 @@ export function Button({
   ariaLabel,
 }: ButtonProps) {
   const base =
-    'inline-flex items-center justify-center rounded font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500'
+    'inline-flex items-center justify-center rounded font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500'
 
   const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
     sm: 'px-3 py-1.5 text-xs',
@@ -30,7 +30,7 @@ export function Button({
   }
 
   const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
-    primary: 'bg-violet-700 text-white hover:bg-violet-600',
+    primary: 'bg-primary-700 text-white hover:bg-primary-600',
     ghost: 'bg-transparent text-neutral-300 hover:bg-neutral-700',
     danger: 'bg-red-800 text-white hover:bg-red-700',
   }

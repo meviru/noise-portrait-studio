@@ -94,7 +94,7 @@ export function ParameterPanel() {
                 className={[
                   'flex-1 py-1 rounded text-xs font-medium transition-colors',
                   config.crosshatchLayers === n
-                    ? 'bg-violet-700 text-white'
+                    ? 'bg-primary-700 text-white'
                     : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700',
                 ].join(' ')}
               >
@@ -118,7 +118,7 @@ export function ParameterPanel() {
                 const v = parseInt(e.target.value, 10)
                 if (!isNaN(v)) setConfig({ seed: v })
               }}
-              className="flex-1 min-w-0 bg-neutral-800 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-100 focus:outline-none focus:border-violet-600"
+              className="flex-1 min-w-0 bg-neutral-800 border border-neutral-700 rounded px-2 py-1 text-xs text-neutral-100 focus:outline-none focus:border-primary-600"
             />
             <Button
               size="sm"
