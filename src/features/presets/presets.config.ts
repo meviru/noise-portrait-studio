@@ -12,7 +12,7 @@ export const PRESETS: Preset[] = [
   {
     id: 'stipple',
     label: 'Stipple',
-    description: 'Dot cloud — dense in shadows, sparse in highlights',
+    description: 'Dot cloud - dense in shadows, sparse in highlights',
     overrides: {
       technique: 'stipple',
       density: 2000,
@@ -25,7 +25,7 @@ export const PRESETS: Preset[] = [
   {
     id: 'hatch',
     label: 'Hatching',
-    description: 'Short strokes following contours — pencil sketch look',
+    description: 'Short strokes following contours - pencil sketch look',
     overrides: {
       technique: 'hatch',
       density: 1500,
@@ -38,7 +38,7 @@ export const PRESETS: Preset[] = [
   {
     id: 'contour',
     label: 'Contour',
-    description: 'Iso-brightness curves — topographic map of the face',
+    description: 'Iso-brightness curves - topographic map of the face',
     overrides: {
       technique: 'contour',
       contourLevels: 8,
@@ -50,7 +50,7 @@ export const PRESETS: Preset[] = [
   {
     id: 'crosshatch',
     label: 'Crosshatch',
-    description: 'Layered strokes at multiple angles — engraving style',
+    description: 'Layered strokes at multiple angles - engraving style',
     overrides: {
       technique: 'crosshatch',
       density: 2000,
