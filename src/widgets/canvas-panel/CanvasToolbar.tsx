@@ -9,7 +9,7 @@ import {
   IconDownload,
   IconRefresh,
   IconSparkles,
-  IconX
+  IconX,
 } from '@tabler/icons-react'
 import type { Canvas } from 'fabric'
 import type { MutableRefObject } from 'react'
@@ -72,7 +72,7 @@ export function CanvasToolbar({
       {/* Right controls */}
       <div className="flex items-center gap-2">
         {/* Zoom */}
-        <span className="text-xs text-neutral-300 w-9 text-right tabular-nums">{zoomPct}%</span>
+        <span className="hidden sm:inline text-xs text-neutral-300 w-9 text-right tabular-nums mr-1 sm:mr-0">{zoomPct}%</span>
 
         <div className="w-px h-4 bg-neutral-800 hidden sm:block" />
 
@@ -84,10 +84,10 @@ export function CanvasToolbar({
 
         <span className="text-xs text-neutral-300 hidden sm:inline">seed: {config.seed}</span>
 
-        <div className="w-px h-4 bg-neutral-800" />
+        <div className="w-px h-4 bg-neutral-800 hidden sm:block" />
 
         {/* Export dropdown */}
-        <div className="relative" ref={dropdownRef}>
+        <div className="relative mr-1 sm:mr-0" ref={dropdownRef}>
           <Button
             size="sm"
             variant="ghost"
@@ -96,12 +96,16 @@ export function CanvasToolbar({
             ariaLabel="Export options"
           >
             <IconDownload size={14} aria-hidden="true" />
-            <span className="ml-1.5">{isExporting ? STRINGS.export.exporting : 'Export'}</span>
-            {isExportOpen ? (
-              <IconChevronUp size={14} className="ml-1 mt-0.5 opacity-70" aria-hidden="true" />
-            ) : (
-              <IconChevronDown size={14} className="ml-1 mt-0.5 opacity-70" aria-hidden="true" />
-            )}
+            <span className="hidden sm:inline ml-1.5">
+              {isExporting ? STRINGS.export.exporting : 'Export'}
+            </span>
+            <span className="hidden sm:inline">
+              {isExportOpen ? (
+                <IconChevronUp size={14} className="ml-1 mt-0.5 opacity-70" aria-hidden="true" />
+              ) : (
+                <IconChevronDown size={14} className="ml-1 mt-0.5 opacity-70" aria-hidden="true" />
+              )}
+            </span>
           </Button>
 
           {isExportOpen && (
@@ -132,7 +136,7 @@ export function CanvasToolbar({
           )}
         </div>
 
-        <div className="w-px h-4 bg-neutral-800" />
+        <div className="w-px h-4 bg-neutral-800 hidden sm:block" />
 
         {/* Generate / Cancel */}
         {isComputing ? (
