@@ -22,7 +22,7 @@ export function Sidebar() {
   const hasImage = imageDataURL !== null
 
   return (
-    <aside className="hidden md:flex flex-col w-55 shrink-0 h-full bg-neutral-900 border-r border-neutral-800 overflow-y-auto">
+    <aside className="hidden md:flex flex-col w-72 shrink-0 h-full bg-neutral-900 border-r border-neutral-800 overflow-y-auto">
       <div className="flex flex-col gap-4 p-3">
         <section className="flex flex-col gap-2">
           <SectionHeader label="Photo" />

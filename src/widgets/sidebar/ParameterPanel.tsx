@@ -1,3 +1,4 @@
+import { IconDice5 } from '@tabler/icons-react'
 import { Slider } from '@/shared/ui/Slider'
 import { Button } from '@/shared/ui/Button'
 import { useStudioStore, selectConfig } from '@/app/store'
@@ -125,7 +126,7 @@ export function ParameterPanel() {
               onClick={() => setConfig({ seed: Math.floor(Math.random() * 99999) })}
               ariaLabel="Randomise seed"
             >
-              ↻
+              <IconDice5 size={14} aria-hidden="true" />
             </Button>
           </div>
         </div>

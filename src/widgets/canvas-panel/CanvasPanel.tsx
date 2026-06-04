@@ -25,6 +25,7 @@ export function CanvasPanel({ canvasRef }: CanvasPanelProps) {
         onCancel={cancel}
         onFit={fitCanvas}
         zoomPct={zoomPct}
+        canvasRef={canvasRef}
       />
       <div ref={containerRef} className="relative flex-1 overflow-hidden">
         <canvas ref={elementRef} role="img" aria-label="Generated noise portrait" />

@@ -2,7 +2,6 @@ import { useRef } from 'react'
 import type { Canvas } from 'fabric'
 import { Sidebar } from '@/widgets/sidebar/Sidebar'
 import { CanvasPanel } from '@/widgets/canvas-panel/CanvasPanel'
-import { ExportPanel } from '@/widgets/export-panel/ExportPanel'
 
 export default function StudioPage() {
   const canvasRef = useRef<Canvas | null>(null)
@@ -12,7 +11,6 @@ export default function StudioPage() {
       <Sidebar />
       <div className="flex flex-col flex-1 min-w-0">
         <CanvasPanel canvasRef={canvasRef} />
-        <ExportPanel canvasRef={canvasRef} />
       </div>
     </div>
   )

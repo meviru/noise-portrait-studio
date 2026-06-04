@@ -1,35 +1,91 @@
+import { useState, useRef, useEffect, useCallback } from 'react'
+import type { MutableRefObject } from 'react'
+import type { Canvas } from 'fabric'
+import {
+  IconArrowsMaximize,
+  IconChevronDown,
+  IconChevronUp,
+  IconDownload,
+  IconSparkles,
+  IconRefresh,
+  IconX,
+} from '@tabler/icons-react'
 import { Button } from '@/shared/ui/Button'
 import { useStudioStore, selectRenderState, selectConfig } from '@/app/store'
+import { useExport } from '@/features/export/useExport'
 import { STRINGS } from '@/shared/constants/strings'
+import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
+import logoUrl from '@/assets/favicon.png'
 
 interface CanvasToolbarProps {
   onGenerate: () => void
   onCancel: () => void
   onFit: () => void
   zoomPct: number
+  canvasRef: MutableRefObject<Canvas | null>
 }
 
-export function CanvasToolbar({ onGenerate, onCancel, onFit, zoomPct }: CanvasToolbarProps) {
+export function CanvasToolbar({
+  onGenerate,
+  onCancel,
+  onFit,
+  zoomPct,
+  canvasRef,
+}: CanvasToolbarProps) {
   const renderState = useStudioStore(selectRenderState)
   const config = useStudioStore(selectConfig)
   const hasImage = useStudioStore((s) => s.brightnessMap !== null)
+  const { exportCanvas, isExporting, exportError, clearExportError } = useExport()
 
+  const [isExportOpen, setIsExportOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+
+  const canExport = renderState === 'done'
   const isComputing = renderState === 'computing' || renderState === 'rendering'
 
-  return (
-    <div className="flex items-center justify-between px-4 h-11 border-b border-neutral-800 shrink-0">
-      <span className="text-[10px] tracking-widest uppercase font-medium text-neutral-500">
-        noise portrait studio
-      </span>
+  useEffect(() => {
+    if (!isExportOpen) return
+    function onOutsideClick(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setIsExportOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', onOutsideClick)
+    return () => document.removeEventListener('mousedown', onOutsideClick)
+  }, [isExportOpen])
 
+  const handleExport = useCallback(
+    (fmt: ExportFormat) => {
+      setIsExportOpen(false)
+      exportCanvas(fmt, canvasRef)
+    },
+    [exportCanvas, canvasRef]
+  )
+
+  return (
+    <div className="flex items-center justify-between px-4 h-14 border-b border-neutral-800 shrink-0 bg-neutral-950">
+      {/* Left: logo + app name */}
+      <div className="flex items-center gap-2.5">
+        <img
+          src={logoUrl}
+          alt=""
+          aria-hidden="true"
+          className="h-10 invert select-none pointer-events-none"
+        />
+        <span className="text-[11px] tracking-widest uppercase font-semibold text-neutral-400">
+          Noise Portrait Studio
+        </span>
+      </div>
+
+      {/* Right controls */}
       <div className="flex items-center gap-2">
-        {/* Zoom indicator + fit button */}
+        {/* Zoom */}
         <div className="hidden sm:flex items-center gap-1">
           <span className="text-[10px] text-neutral-600 font-mono w-9 text-right tabular-nums">
             {zoomPct}%
           </span>
           <Button size="sm" variant="ghost" onClick={onFit} ariaLabel="Fit canvas to screen">
-            ⊡
+            <IconArrowsMaximize size={14} aria-hidden="true" />
           </Button>
         </div>
 
@@ -39,13 +95,73 @@ export function CanvasToolbar({ onGenerate, onCancel, onFit, zoomPct }: CanvasTo
           seed: {config.seed}
         </span>
 
+        <div className="w-px h-4 bg-neutral-800" />
+
+        {/* Export dropdown */}
+        <div className="relative" ref={dropdownRef}>
+          <Button
+            size="sm"
+            variant="ghost"
+            disabled={!canExport || isExporting}
+            onClick={() => setIsExportOpen((o) => !o)}
+            ariaLabel="Export options"
+          >
+            <IconDownload size={14} aria-hidden="true" />
+            <span className="ml-1.5">{isExporting ? STRINGS.export.exporting : 'Export'}</span>
+            {isExportOpen ? (
+              <IconChevronUp size={12} className="ml-1 opacity-60" aria-hidden="true" />
+            ) : (
+              <IconChevronDown size={12} className="ml-1 opacity-60" aria-hidden="true" />
+            )}
+          </Button>
+
+          {isExportOpen && (
+            <div className="absolute right-0 top-full mt-1 w-36 bg-neutral-800 border border-neutral-700 rounded-md shadow-2xl z-50 overflow-hidden">
+              {(['svg', 'png', 'pdf'] as ExportFormat[]).map((fmt) => (
+                <button
+                  key={fmt}
+                  onClick={() => handleExport(fmt)}
+                  className="w-full flex items-center gap-2 px-3 py-2 text-left text-xs text-neutral-200 hover:bg-neutral-700 transition-colors"
+                >
+                  <IconDownload size={13} className="text-neutral-500" aria-hidden="true" />
+                  {STRINGS.export[fmt]}
+                </button>
+              ))}
+              {exportError && (
+                <div className="border-t border-neutral-700 px-3 py-2">
+                  <p role="alert" className="text-[10px] text-red-400 leading-snug mb-1">
+                    {exportError}
+                  </p>
+                  <button
+                    onClick={clearExportError}
+                    className="text-[10px] text-neutral-600 underline"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="w-px h-4 bg-neutral-800" />
+
+        {/* Generate / Cancel */}
         {isComputing ? (
           <Button size="sm" variant="ghost" onClick={onCancel}>
-            {STRINGS.generate.cancel}
+            <IconX size={14} aria-hidden="true" />
+            <span className="ml-1.5">{STRINGS.generate.cancel}</span>
           </Button>
         ) : (
           <Button size="sm" onClick={onGenerate} disabled={!hasImage}>
-            {renderState === 'done' ? STRINGS.generate.rerender : STRINGS.generate.button}
+            {renderState === 'done' ? (
+              <IconRefresh size={14} aria-hidden="true" />
+            ) : (
+              <IconSparkles size={14} aria-hidden="true" />
+            )}
+            <span className="ml-1.5">
+              {renderState === 'done' ? STRINGS.generate.rerender : STRINGS.generate.button}
+            </span>
           </Button>
         )}
       </div>

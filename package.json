@@ -33,6 +33,7 @@
     "vitest": "^4.1.8"
   },
   "dependencies": {
+    "@tabler/icons-react": "^3.44.0",
     "fabric": "^6.9.1",
     "immer": "^11.1.8",
     "jspdf": "^4.2.1",
