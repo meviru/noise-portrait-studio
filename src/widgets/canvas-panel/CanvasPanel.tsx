@@ -4,7 +4,7 @@ import type { Canvas } from 'fabric'
 import { useFabricCanvas } from '@/shared/lib/fabric/useFabricCanvas'
 import { useGenerate } from '@/features/generate/useGenerate'
 import { CanvasOverlay } from './CanvasOverlay'
-import { CanvasToolbar } from './CanvasToolbar'
+import { CanvasFloatingControls } from './CanvasFloatingControls'
 
 interface CanvasPanelProps {
   canvasRef: MutableRefObject<Canvas | null>
@@ -19,24 +19,19 @@ export function CanvasPanel({ canvasRef }: CanvasPanelProps) {
   const { elementRef, fitCanvas } = useFabricCanvas(containerRef, canvasRef, setZoomPct)
   const { trigger, cancel } = useGenerate()
 
-  /**
-   * Stable callback that fires generation with the current canvas ref.
-   */
   const handleGenerate = useCallback(() => trigger(canvasRef), [trigger, canvasRef])
 
   return (
-    <div className="flex flex-col flex-1 bg-neutral-950 min-h-0">
-      <CanvasToolbar
+    <div ref={containerRef} className="relative flex-1 overflow-hidden bg-neutral-950 min-h-0">
+      <canvas ref={elementRef} role="img" aria-label="Generated noise portrait" />
+      <CanvasOverlay />
+      <CanvasFloatingControls
         onGenerate={handleGenerate}
         onCancel={cancel}
         onFit={fitCanvas}
         zoomPct={zoomPct}
         canvasRef={canvasRef}
       />
-      <div ref={containerRef} className="relative flex-1 overflow-hidden">
-        <canvas ref={elementRef} role="img" aria-label="Generated noise portrait" />
-        <CanvasOverlay />
-      </div>
     </div>
   )
 }

@@ -32,6 +32,11 @@ export function Sidebar() {
 
   return (
     <aside className="hidden md:flex flex-col w-72 shrink-0 h-full bg-neutral-900 border-r border-neutral-800 overflow-y-auto">
+      <div className="px-4 py-3 border-b bg-neutral-900 border-neutral-800 shrink-0">
+        <span className="text-[10px] tracking-widest uppercase font-semibold text-neutral-500">
+          Noise Portrait Studio
+        </span>
+      </div>
       <div className="flex flex-col gap-4 p-3">
         <section className="flex flex-col gap-2">
           <SectionHeader label="Photo" />
