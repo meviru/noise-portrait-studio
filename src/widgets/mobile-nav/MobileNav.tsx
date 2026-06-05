@@ -1,37 +1,12 @@
 import { useState } from 'react'
-import {
-  IconAdjustmentsHorizontal,
-  IconBrush,
-  IconPalette,
-  IconPhoto,
-  IconX,
-} from '@tabler/icons-react'
+import { IconX } from '@tabler/icons-react'
 import { DropZone } from '@/shared/ui/DropZone'
 import { useImageUpload } from '@/features/image-upload/useImageUpload'
 import { useStudioStore } from '@/app/store'
-import { STRINGS } from '@/shared/constants/strings'
 import { PresetGrid } from '@/widgets/sidebar/PresetGrid'
 import { ParameterPanel } from '@/widgets/sidebar/ParameterPanel'
 import { PalettePicker } from '@/widgets/sidebar/PalettePicker'
-
-type TabId = 'photo' | 'preset' | 'parameters' | 'palette'
-
-const TABS = [
-  { id: 'photo' as TabId, label: 'Photo', panelLabel: 'Photo', Icon: IconPhoto },
-  { id: 'preset' as TabId, label: 'Style', panelLabel: STRINGS.sidebar.presets, Icon: IconBrush },
-  {
-    id: 'parameters' as TabId,
-    label: 'Parameters',
-    panelLabel: STRINGS.sidebar.parameters,
-    Icon: IconAdjustmentsHorizontal,
-  },
-  {
-    id: 'palette' as TabId,
-    label: 'Palette',
-    panelLabel: STRINGS.sidebar.palette,
-    Icon: IconPalette,
-  },
-] as const
+import { type TabId, TABS } from './utility/constants/mobile-nav.constant'
 
 export function MobileNav() {
   const [activeTab, setActiveTab] = useState<TabId | null>(null)
