@@ -3,6 +3,7 @@ import { mapRange } from '@/shared/lib/utils/mapRange'
 import { sampleBrightness } from './imageUtils'
 import type { DotItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for stipple dot generation. */
 export interface StippleConfig {
   canvasWidth: number
   canvasHeight: number
@@ -12,6 +13,16 @@ export interface StippleConfig {
   seed: number
 }
 
+/**
+ * Generates stipple dots using rejection sampling weighted by pixel darkness.
+ * Darker areas attract more and larger dots; bright highlights receive few or none.
+ *
+ * @param config - Stipple generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of dot positions and radii
+ */
 export function generateStipple(
   config: StippleConfig,
   brightnessMap: Float32Array,

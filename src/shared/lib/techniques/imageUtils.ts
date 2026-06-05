@@ -1,5 +1,17 @@
 import { clamp } from '@/shared/lib/utils/clamp'
 
+/**
+ * Samples the brightness map at a given canvas position.
+ *
+ * @param x - Canvas x coordinate
+ * @param y - Canvas y coordinate
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @param canvasWidth - Logical canvas width used to map coordinates
+ * @param canvasHeight - Logical canvas height used to map coordinates
+ * @returns Brightness value in [0,1]; 0.5 when out of bounds
+ */
 export function sampleBrightness(
   x: number,
   y: number,
@@ -15,7 +27,14 @@ export function sampleBrightness(
   return brightnessMap[idx] ?? 0.5
 }
 
-// Sobel edge-detection: returns per-pixel gradient vectors (dx, dy)
+/**
+ * Computes per-pixel Sobel edge-detection gradient vectors for a brightness map.
+ *
+ * @param brightness - Packed [0,1] brightness values in row-major order
+ * @param width - Map width in pixels
+ * @param height - Map height in pixels
+ * @returns `dx` and `dy` gradient arrays in the same row-major layout; border pixels are zero
+ */
 export function sobelGradient(
   brightness: Float32Array,
   width: number,

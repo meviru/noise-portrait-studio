@@ -1,6 +1,7 @@
 import { sampleBrightness } from './imageUtils'
 import type { StrokeItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for scanline generation. */
 export interface ScanlineConfig {
   canvasWidth: number
   canvasHeight: number
@@ -10,6 +11,17 @@ export interface ScanlineConfig {
   scanlineAmplitude: number
 }
 
+/**
+ * Generates horizontal scanlines whose vertical position is deflected by image brightness.
+ * Dark pixels push lines upward; bright pixels leave them near the baseline,
+ * producing a Joy Division-style waveform portrait.
+ *
+ * @param config - Scanline generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of short horizontal segments forming each scanline
+ */
 export function generateScanline(
   config: ScanlineConfig,
   brightnessMap: Float32Array,

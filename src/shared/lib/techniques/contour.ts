@@ -1,5 +1,6 @@
 import type { StrokeItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for iso-brightness contour line generation. */
 export interface ContourConfig {
   canvasWidth: number
   canvasHeight: number
@@ -82,6 +83,16 @@ function marchLevel(
   }
 }
 
+/**
+ * Traces iso-brightness contour lines using the marching squares algorithm.
+ * Produces evenly spaced threshold levels between 0.05 and 0.95.
+ *
+ * @param config - Contour generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of interpolated contour line segments scaled to canvas space
+ */
 export function generateContour(
   config: ContourConfig,
   brightnessMap: Float32Array,

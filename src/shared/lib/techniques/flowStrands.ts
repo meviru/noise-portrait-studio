@@ -3,6 +3,7 @@ import { clamp } from '@/shared/lib/utils/clamp'
 import { sampleBrightness, sobelGradient } from './imageUtils'
 import type { GeneratedPath } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for flow strand path generation. */
 export interface FlowStrandsConfig {
   canvasWidth: number
   canvasHeight: number
@@ -15,6 +16,17 @@ export interface FlowStrandsConfig {
 
 const STEP_SIZE = 3 // canvas-px per integration step
 
+/**
+ * Generates paths that flow along iso-brightness contours by integrating the
+ * gradient-perpendicular tangent field in both directions from each seed point.
+ * Seeds are drawn from mid-to-dark regions; near-white highlights are skipped.
+ *
+ * @param config - Flow strands generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of polyline paths, each with at least 3 points
+ */
 export function generateFlowStrands(
   config: FlowStrandsConfig,
   brightnessMap: Float32Array,

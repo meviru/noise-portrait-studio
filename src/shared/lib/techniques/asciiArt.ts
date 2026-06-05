@@ -4,12 +4,24 @@ import type { CharItem } from '@/entities/stroke-data/StrokeData.types'
 const CHAR_RAMP = ' .:-=+*#%@'
 const CHAR_ASPECT = 0.55 // monospace char width / height
 
+/** Configuration for ASCII art character generation. */
 export interface AsciiArtConfig {
   canvasWidth: number
   canvasHeight: number
   density: number // character rows
 }
 
+/**
+ * Maps each cell of a character grid to an ASCII symbol from a brightness ramp
+ * (`' .:-=+*#%@'`), with denser characters in darker areas.
+ * Blank cells (space character) are omitted from the output.
+ *
+ * @param config - ASCII art generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of character positions and symbols, excluding blank cells
+ */
 export function generateAsciiArt(
   config: AsciiArtConfig,
   brightnessMap: Float32Array,

@@ -3,6 +3,7 @@ import { mapRange } from '@/shared/lib/utils/mapRange'
 import { sobelGradient, sampleBrightness } from './imageUtils'
 import type { StrokeItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for hatch stroke generation. */
 export interface HatchConfig {
   canvasWidth: number
   canvasHeight: number
@@ -71,6 +72,17 @@ function hatchPass(
   return strokes
 }
 
+/**
+ * Generates hatching strokes aligned to image edges via a single Sobel pass.
+ * Strokes are placed on a regular grid and oriented perpendicular to the local gradient;
+ * flat areas default to horizontal strokes.
+ *
+ * @param config - Hatch generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of line segment endpoints and weights
+ */
 export function generateHatch(
   config: HatchConfig,
   brightnessMap: Float32Array,
@@ -81,7 +93,20 @@ export function generateHatch(
   return hatchPass(config, brightnessMap, dx, dy, mapWidth, mapHeight, 0, 0.88)
 }
 
-// Exported for crosshatch to reuse gradient + inner pass
+/**
+ * Runs one hatch pass with a pre-computed Sobel gradient.
+ * Exported so crosshatch can compute the gradient once and reuse it across layers.
+ *
+ * @param config - Hatch generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param dx - Horizontal Sobel gradient from {@link sobelGradient}
+ * @param dy - Vertical Sobel gradient from {@link sobelGradient}
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @param angleOffset - Rotation added to each stroke's base angle (radians)
+ * @param brightnessThreshold - Cells brighter than this value are skipped
+ * @returns Array of line segment endpoints and weights
+ */
 export function hatchWithGradient(
   config: HatchConfig,
   brightnessMap: Float32Array,

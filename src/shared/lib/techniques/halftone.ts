@@ -2,6 +2,7 @@ import { mapRange } from '@/shared/lib/utils/mapRange'
 import { sampleBrightness } from './imageUtils'
 import type { DotItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for halftone dot generation. */
 export interface HalftoneConfig {
   canvasWidth: number
   canvasHeight: number
@@ -10,6 +11,16 @@ export interface HalftoneConfig {
   maxSize: number
 }
 
+/**
+ * Generates a staggered hexagonal dot grid where each dot's radius is proportional
+ * to local darkness, producing a classic offset-print / CMYK halftone look.
+ *
+ * @param config - Halftone generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of dot positions and radii; near-invisible dots (r < 0.1) are omitted
+ */
 export function generateHalftone(
   config: HalftoneConfig,
   brightnessMap: Float32Array,

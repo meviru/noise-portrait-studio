@@ -3,6 +3,7 @@ import { clamp } from '@/shared/lib/utils/clamp'
 import { sobelGradient } from './imageUtils'
 import type { TriangleItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for low-poly triangle generation. */
 export interface LowPolyConfig {
   canvasWidth: number
   canvasHeight: number
@@ -122,6 +123,17 @@ function samplePoints(
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
+/**
+ * Generates Delaunay triangles using the Bowyer-Watson algorithm on a set of
+ * edge-biased sample points. Points near strong gradients are accepted at a higher
+ * rate, concentrating smaller triangles in detail-rich areas (eyes, lips, hair).
+ *
+ * @param config - Low-poly generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of triangles covering the full canvas
+ */
 export function generateLowPoly(
   config: LowPolyConfig,
   brightnessMap: Float32Array,

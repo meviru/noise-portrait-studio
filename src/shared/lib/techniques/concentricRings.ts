@@ -2,6 +2,7 @@ import { mapRange } from '@/shared/lib/utils/mapRange'
 import { sampleBrightness } from './imageUtils'
 import type { StrokeItem } from '@/entities/stroke-data/StrokeData.types'
 
+/** Configuration for concentric ring generation. */
 export interface ConcentricRingsConfig {
   canvasWidth: number
   canvasHeight: number
@@ -10,6 +11,17 @@ export interface ConcentricRingsConfig {
   maxSize: number   // stroke weight at darkest areas
 }
 
+/**
+ * Generates concentric arcs approximated as short line segments, radiating from
+ * the canvas centre. Each segment's stroke weight is mapped from local brightness,
+ * making arcs thick in shadows and thin-to-invisible in highlights.
+ *
+ * @param config - Concentric rings generation parameters
+ * @param brightnessMap - Packed [0,1] brightness values in row-major order
+ * @param mapWidth - Width of the brightness map in pixels
+ * @param mapHeight - Height of the brightness map in pixels
+ * @returns Array of arc segments; near-invisible segments (weight < 0.15) are omitted
+ */
 export function generateConcentricRings(
   config: ConcentricRingsConfig,
   brightnessMap: Float32Array,
