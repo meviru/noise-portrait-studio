@@ -13,6 +13,8 @@ export enum TechniqueId {
   LowPoly = 'low-poly',
   Mosaic = 'mosaic',
   Ascii = 'ascii',
+  Constellation = 'constellation',
+  Painterly = 'painterly',
 }
 
 /**
@@ -25,6 +27,7 @@ export enum PayloadType {
   Polys = 'polys',
   Rects = 'rects',
   Chars = 'chars',
+  Constellation = 'constellation',
 }
 
 /**
@@ -258,6 +261,33 @@ export const PRESETS: Preset[] = [
       technique: TechniqueId.Ascii,
       density: 50,
       opacity: 0.95,
+    },
+  },
+  {
+    id: TechniqueId.Constellation,
+    label: 'Constellation',
+    description: 'Your face as a night sky, dots linked like a star constellation',
+    overrides: {
+      technique: TechniqueId.Constellation,
+      density: 600,
+      minSize: 0.5,
+      maxSize: 2.5,
+      opacity: 0.85,
+      seed: 4217,
+    },
+  },
+  {
+    id: TechniqueId.Painterly,
+    label: 'Painterly',
+    description: 'Looks like a painter spent an afternoon turning you into a masterpiece',
+    overrides: {
+      technique: TechniqueId.Painterly,
+      density: 180,
+      minSize: 1.5,
+      maxSize: 5.0,
+      strokeLength: 32,
+      opacity: 0.88,
+      seed: 4217,
     },
   },
 ]

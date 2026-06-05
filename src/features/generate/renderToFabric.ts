@@ -99,10 +99,8 @@ export async function renderToFabric(
   canvas.backgroundColor = getBgColor(config)
   canvas.renderOnAddRemove = false
 
-  const items = payload.items
-  const total = items.length
-
   if (payload.type === PayloadType.Dots) {
+    const total = payload.items.length
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const dot of chunk) {
@@ -125,6 +123,7 @@ export async function renderToFabric(
       await new Promise<void>((r) => setTimeout(r, 0))
     }
   } else if (payload.type === PayloadType.Strokes) {
+    const total = payload.items.length
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const stroke of chunk) {
@@ -147,6 +146,7 @@ export async function renderToFabric(
       await new Promise<void>((r) => setTimeout(r, 0))
     }
   } else if (payload.type === PayloadType.Polys) {
+    const total = payload.items.length
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const tri of chunk) {
@@ -169,6 +169,7 @@ export async function renderToFabric(
       await new Promise<void>((r) => setTimeout(r, 0))
     }
   } else if (payload.type === PayloadType.Rects) {
+    const total = payload.items.length
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const rect of chunk) {
@@ -194,6 +195,7 @@ export async function renderToFabric(
       await new Promise<void>((r) => setTimeout(r, 0))
     }
   } else if (payload.type === PayloadType.Chars) {
+    const total = payload.items.length
     const fontSize = Math.round((CANVAS_HEIGHT / config.density) * 0.9)
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
@@ -218,8 +220,58 @@ export async function renderToFabric(
       onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
       await new Promise<void>((r) => setTimeout(r, 0))
     }
+  } else if (payload.type === PayloadType.Constellation) {
+    const totalEdges = payload.edges.length
+    const totalDots = payload.dots.length
+    const total = totalEdges + totalDots
+
+    // Render edges first so dots always appear on top
+    for (let i = 0; i < totalEdges; i += RENDER_BATCH_SIZE) {
+      const chunk = payload.edges.slice(i, i + RENDER_BATCH_SIZE)
+      for (const edge of chunk) {
+        const mx = (edge.x1 + edge.x2) / 2
+        const my = (edge.y1 + edge.y2) / 2
+        const color = resolveColor(mx, my, brightnessMap, rgbaMap, mapWidth, mapHeight, config)
+        canvas.add(
+          new Line([edge.x1, edge.y1, edge.x2, edge.y2], {
+            stroke: color,
+            strokeWidth: edge.weight,
+            selectable: false,
+            evented: false,
+            objectCaching: false,
+            opacity: config.opacity * 0.6, // edges slightly more transparent than dots
+            strokeLineCap: 'round',
+          })
+        )
+      }
+      onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 50))
+      await new Promise<void>((r) => setTimeout(r, 0))
+    }
+
+    for (let i = 0; i < totalDots; i += RENDER_BATCH_SIZE) {
+      const chunk = payload.dots.slice(i, i + RENDER_BATCH_SIZE)
+      for (const dot of chunk) {
+        const color = resolveColor(dot.x, dot.y, brightnessMap, rgbaMap, mapWidth, mapHeight, config)
+        canvas.add(
+          new Circle({
+            left: dot.x - dot.r,
+            top: dot.y - dot.r,
+            radius: dot.r,
+            fill: color,
+            strokeWidth: 0,
+            selectable: false,
+            evented: false,
+            objectCaching: false,
+            opacity: config.opacity,
+          })
+        )
+      }
+      onProgress(50 + Math.round(((i + RENDER_BATCH_SIZE) / total) * 50))
+      await new Promise<void>((r) => setTimeout(r, 0))
+    }
   } else {
     // paths — polylines for flow strands
+    const total = payload.items.length
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const points of chunk) {

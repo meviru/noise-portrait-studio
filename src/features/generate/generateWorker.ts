@@ -9,6 +9,8 @@ import { generateConcentricRings } from '@/shared/lib/techniques/concentricRings
 import { generateLowPoly } from '@/shared/lib/techniques/lowPoly'
 import { generateMosaic } from '@/shared/lib/techniques/mosaic'
 import { generateAsciiArt } from '@/shared/lib/techniques/asciiArt'
+import { generateConstellation } from '@/shared/lib/techniques/constellation'
+import { generatePainterly } from '@/shared/lib/techniques/painterly'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
 import { TechniqueId, PayloadType } from '@/shared/constants/shared.constant'
 
@@ -199,6 +201,43 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessHeight
       )
       result = { payload: { type: PayloadType.Chars, items }, generation }
+      break
+    }
+
+    case TechniqueId.Constellation: {
+      const { dots, edges } = generateConstellation(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          minSize: config.minSize,
+          maxSize: config.maxSize,
+          seed: config.seed,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: PayloadType.Constellation, dots, edges }, generation }
+      break
+    }
+
+    case TechniqueId.Painterly: {
+      const items = generatePainterly(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          minSize: config.minSize,
+          maxSize: config.maxSize,
+          strokeLength: config.strokeLength,
+          seed: config.seed,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: PayloadType.Strokes, items }, generation }
       break
     }
   }

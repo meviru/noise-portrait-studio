@@ -13,7 +13,7 @@ export interface LowPolyConfig {
 
 // ── Internal types ────────────────────────────────────────────────────────────
 
-interface Pt { x: number; y: number }
+export interface Pt { x: number; y: number }
 interface DTri { a: Pt; b: Pt; c: Pt; cx: number; cy: number; r2: number }
 
 // ── Circumcircle ──────────────────────────────────────────────────────────────
@@ -36,7 +36,7 @@ function edgeMatch(a1: Pt, b1: Pt, a2: Pt, b2: Pt) {
 
 // ── Bowyer-Watson Delaunay triangulation ─────────────────────────────────────
 
-function triangulate(pts: Pt[], W: number, H: number): DTri[] {
+export function triangulate(pts: Pt[], W: number, H: number): DTri[] {
   // Super-triangle large enough to contain all points
   const M = Math.max(W, H) * 4
   const sA: Pt = { x: W / 2, y: -M }

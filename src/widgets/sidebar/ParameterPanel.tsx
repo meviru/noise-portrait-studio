@@ -19,9 +19,11 @@ export function ParameterPanel() {
   const isLowPoly = technique === TechniqueId.LowPoly
   const isMosaic = technique === TechniqueId.Mosaic
   const isAscii = technique === TechniqueId.Ascii
+  const isConstellation = technique === TechniqueId.Constellation
+  const isPainterly = technique === TechniqueId.Painterly
   const isDotTechnique = technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
 
-  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || isScanline
+  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || isScanline || isPainterly
   const showContourLevels = technique === TechniqueId.Contour
   const showCrosshatchLayers = technique === TechniqueId.Crosshatch
   const showDensity = technique !== TechniqueId.Contour
@@ -29,12 +31,12 @@ export function ParameterPanel() {
   const showMaxSize = technique !== TechniqueId.Contour && !isScanline && !isLowPoly && !isMosaic && !isAscii
   const showScanlineAmplitude = isScanline
   const showStrandLength = isFlowStrands
-  const showSeed = technique === TechniqueId.Stipple || isFlowStrands || isLowPoly
+  const showSeed = technique === TechniqueId.Stipple || isFlowStrands || isLowPoly || isConstellation || isPainterly
 
-  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : isLowPoly ? 'Points' : isMosaic ? 'Tiles' : isAscii ? 'Rows' : 'Density'
-  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : isRings ? 20 : isLowPoly ? 200 : isMosaic ? 20 : isAscii ? 20 : 300
-  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : isRings ? 120 : isLowPoly ? 1500 : isMosaic ? 150 : isAscii ? 100 : 4000
-  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : isRings ? 5 : isLowPoly ? 50 : isMosaic ? 5 : isAscii ? 5 : 100
+  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : isLowPoly ? 'Points' : isMosaic ? 'Tiles' : isAscii ? 'Rows' : isConstellation ? 'Stars' : isPainterly ? 'Coverage' : 'Density'
+  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : isRings ? 20 : isLowPoly ? 200 : isMosaic ? 20 : isAscii ? 20 : isConstellation ? 200 : isPainterly ? 50 : 300
+  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : isRings ? 120 : isLowPoly ? 1500 : isMosaic ? 150 : isAscii ? 100 : isConstellation ? 2000 : isPainterly ? 400 : 4000
+  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : isRings ? 5 : isLowPoly ? 50 : isMosaic ? 5 : isAscii ? 5 : isConstellation ? 100 : isPainterly ? 25 : 100
 
   return (
     <div className="flex flex-col gap-3">
@@ -85,10 +87,10 @@ export function ParameterPanel() {
 
       {showStrokeLength && (
         <Slider
-          label={isScanline ? 'Resolution' : 'Stroke Length'}
-          min={isScanline ? 2 : 6}
-          max={isScanline ? 20 : 60}
-          step={isScanline ? 1 : 2}
+          label={isScanline ? 'Resolution' : isPainterly ? 'Brush Length' : 'Stroke Length'}
+          min={isScanline ? 2 : isPainterly ? 10 : 6}
+          max={isScanline ? 20 : isPainterly ? 80 : 60}
+          step={isScanline ? 1 : isPainterly ? 2 : 2}
           value={config.strokeLength}
           onChange={(v) => setConfig({ strokeLength: v })}
           formatValue={(v) => `${v}px`}

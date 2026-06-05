@@ -23,6 +23,7 @@ export type WorkerPayload =
   | { type: PayloadType.Polys; items: TriangleItem[] }
   | { type: PayloadType.Rects; items: RectItem[] }
   | { type: PayloadType.Chars; items: CharItem[] }
+  | { type: PayloadType.Constellation; dots: DotItem[]; edges: StrokeItem[] }
 
 export interface WorkerRenderConfig {
   technique: TechniqueId
