@@ -5,6 +5,13 @@ import { exportPNG } from '../exportPNG'
 const mockCanvas = {
   toSVG: vi.fn(() => '<svg><rect/></svg>'),
   toDataURL: vi.fn(() => 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='),
+  viewportTransform: [1, 0, 0, 1, 0, 0] as [number, number, number, number, number, number],
+  width: 800,
+  height: 800,
+  backgroundColor: '#ffffff',
+  setDimensions: vi.fn(),
+  setViewportTransform: vi.fn(),
+  renderAll: vi.fn(),
 }
 
 beforeEach(() => {
@@ -13,6 +20,10 @@ beforeEach(() => {
   mockCanvas.toDataURL.mockReturnValue(
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='
   )
+  mockCanvas.viewportTransform = [1, 0, 0, 1, 0, 0]
+  mockCanvas.setDimensions = vi.fn()
+  mockCanvas.setViewportTransform = vi.fn()
+  mockCanvas.renderAll = vi.fn()
 
   vi.stubGlobal('URL', {
     createObjectURL: vi.fn(() => 'blob:mock-url'),
