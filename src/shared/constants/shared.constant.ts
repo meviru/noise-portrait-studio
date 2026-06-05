@@ -9,6 +9,7 @@ export enum TechniqueId {
   Halftone = 'halftone',
   Scanline = 'scanline',
   FlowStrands = 'flow-strands',
+  ConcentricRings = 'concentric-rings',
 }
 
 /**
@@ -199,6 +200,18 @@ export const PRESETS: Preset[] = [
       strandLength: 80,
       opacity: 0.85,
       seed: 3141,
+    },
+  },
+  {
+    id: TechniqueId.ConcentricRings,
+    label: 'Rings',
+    description: 'Concentric arcs — thick in shadows, vanishing in highlights',
+    overrides: {
+      technique: TechniqueId.ConcentricRings,
+      density: 70,
+      minSize: 0.3,
+      maxSize: 4.5,
+      opacity: 0.9,
     },
   },
 ]

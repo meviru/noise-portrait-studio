@@ -5,6 +5,7 @@ import { generateCrosshatch } from '@/shared/lib/techniques/crosshatch'
 import { generateHalftone } from '@/shared/lib/techniques/halftone'
 import { generateScanline } from '@/shared/lib/techniques/scanline'
 import { generateFlowStrands } from '@/shared/lib/techniques/flowStrands'
+import { generateConcentricRings } from '@/shared/lib/techniques/concentricRings'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
 import { TechniqueId } from '@/shared/constants/shared.constant'
 
@@ -112,6 +113,23 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
           strokeLength: config.strokeLength,
           minSize: config.minSize,
           scanlineAmplitude: config.scanlineAmplitude,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: 'strokes', items }, generation }
+      break
+    }
+
+    case TechniqueId.ConcentricRings: {
+      const items = generateConcentricRings(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          minSize: config.minSize,
+          maxSize: config.maxSize,
         },
         brightnessMap,
         brightnessWidth,

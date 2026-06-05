@@ -15,6 +15,7 @@ export function ParameterPanel() {
 
   const isScanline = technique === TechniqueId.Scanline
   const isFlowStrands = technique === TechniqueId.FlowStrands
+  const isRings = technique === TechniqueId.ConcentricRings
   const isDotTechnique = technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
 
   const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || isScanline
@@ -26,10 +27,10 @@ export function ParameterPanel() {
   const showStrandLength = isFlowStrands
   const showSeed = technique === TechniqueId.Stipple || isFlowStrands
 
-  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : 'Density'
-  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : 300
-  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : 4000
-  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : 100
+  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : 'Density'
+  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : (isRings) ? 20 : 300
+  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : (isRings) ? 120 : 4000
+  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : (isRings) ? 5 : 100
 
   return (
     <div className="flex flex-col gap-3">
