@@ -9,16 +9,32 @@ interface UseFabricCanvasReturn {
   fitCanvas: () => void
 }
 
+/**
+ * Initialises a Fabric.js canvas, wires zoom/pan/touch interactions, and returns fit and ref handles.
+ * @param containerRef - Ref to the wrapping div used to measure available space.
+ * @param externalCanvasRef - Optional ref to share the Canvas instance with a parent.
+ * @param onZoomChange - Called with the new zoom percentage whenever the zoom level changes.
+ * @returns Object with `canvasRef`, `elementRef`, and `fitCanvas`.
+ */
 export function useFabricCanvas(
   containerRef: RefObject<HTMLDivElement | null>,
   externalCanvasRef?: MutableRefObject<Canvas | null>,
   onZoomChange?: (pct: number) => void
 ): UseFabricCanvasReturn {
+  /**
+   * Fallback canvas ref used when no external ref is provided by the caller.
+   */
   const internalCanvasRef = useRef<Canvas | null>(null)
   const canvasRef = externalCanvasRef ?? internalCanvasRef
   const elementRef = useRef<HTMLCanvasElement | null>(null)
+  /**
+   * Scale at which the canvas fits its container; used to restore fit after a manual zoom.
+   */
   const baseScaleRef = useRef(1)
 
+  /**
+   * Scales and centers the canvas to fill its container at the computed fit scale.
+   */
   const fitCanvas = useCallback(() => {
     const canvas = canvasRef.current
     const container = containerRef.current
@@ -139,6 +155,11 @@ export function useFabricCanvas(
     let isTouchPanning = false
     let lastTouchPos = { x: 0, y: 0 }
 
+    /**
+     * Returns the pixel distance between two touch points for pinch-zoom scaling.
+     * @param e - TouchEvent with at least two active touches.
+     * @returns Distance in pixels between touch[0] and touch[1].
+     */
     function pinchDist(e: TouchEvent): number {
       const dx = e.touches[0].clientX - e.touches[1].clientX
       const dy = e.touches[0].clientY - e.touches[1].clientY

@@ -11,14 +11,24 @@ interface DropZoneProps {
   imageDataURL: string | null
 }
 
+/**
+ * Click/drag-and-drop upload area; shows a thumbnail preview once an image is loaded.
+ */
 export function DropZone({ onFile, isProcessing, error, hasImage, imageDataURL }: DropZoneProps) {
   const [isDragging, setIsDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
+  /**
+   * Programmatically opens the hidden file input dialog.
+   */
   function openDialog() {
     inputRef.current?.click()
   }
 
+  /**
+   * Handles a drag-and-drop file onto the zone.
+   * @param e - The drag event from the drop target.
+   */
   function handleDrop(e: DragEvent<HTMLDivElement>) {
     e.preventDefault()
     setIsDragging(false)
@@ -26,12 +36,20 @@ export function DropZone({ onFile, isProcessing, error, hasImage, imageDataURL }
     if (file) onFile(file)
   }
 
+  /**
+   * Handles file selection via the hidden input.
+   * @param e - The change event from the file input.
+   */
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (file) onFile(file)
     e.target.value = ''
   }
 
+  /**
+   * Opens the file dialog when Enter or Space is pressed for keyboard accessibility.
+   * @param e - The keyboard event from the drop zone div.
+   */
   function handleKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()

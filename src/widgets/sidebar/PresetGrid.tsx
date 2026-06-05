@@ -1,6 +1,9 @@
 import { PRESETS } from '@/features/presets/presets.config'
 import { usePreset } from '@/features/presets/usePreset'
 
+/**
+ * Grid of preset style cards; selecting one applies its config to the store.
+ */
 export function PresetGrid() {
   const { activePreset, activatePreset } = usePreset()
 

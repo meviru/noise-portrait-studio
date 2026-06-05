@@ -11,6 +11,9 @@ interface ButtonProps {
   ariaLabel?: string
 }
 
+/**
+ * Shared button with primary, ghost, and danger variants and sm/md sizes.
+ */
 export function Button({
   children,
   onClick,

@@ -8,6 +8,9 @@ interface SliderProps {
   formatValue?: (value: number) => string
 }
 
+/**
+ * Labeled range input with an optional value formatter displayed inline.
+ */
 export function Slider({ label, min, max, step, value, onChange, formatValue }: SliderProps) {
   const display = formatValue ? formatValue(value) : String(value)
 

@@ -6,16 +6,25 @@ import { useImageUpload } from '@/features/image-upload/useImageUpload'
 import { useStudioStore } from '@/app/store'
 import { STRINGS } from '@/shared/constants/strings'
 
+/**
+ * Uppercase section label used to group sidebar controls.
+ */
 function SectionHeader({ label }: { label: string }) {
   return (
     <h3 className="text-[10px] tracking-widest uppercase font-medium text-neutral-500">{label}</h3>
   )
 }
 
+/**
+ * Horizontal rule separating sidebar sections.
+ */
 function Divider() {
   return <div className="h-px bg-neutral-800" />
 }
 
+/**
+ * Desktop sidebar containing photo upload, presets, render parameters, and palette controls.
+ */
 export function Sidebar() {
   const { handleFile, isProcessing, error, clearError } = useImageUpload()
   const imageDataURL = useStudioStore((s) => s.imageDataURL)

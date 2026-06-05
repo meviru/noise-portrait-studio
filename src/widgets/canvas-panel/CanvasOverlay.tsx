@@ -3,6 +3,9 @@ import { ProgressBar } from '@/shared/ui/ProgressBar'
 import { useStudioStore, selectRenderState, selectRenderProgress } from '@/app/store'
 import { STRINGS } from '@/shared/constants/strings'
 
+/**
+ * Renders the progress bar and animated status badge over the canvas during and after generation.
+ */
 export function CanvasOverlay() {
   const renderState = useStudioStore(selectRenderState)
   const progress = useStudioStore(selectRenderProgress)

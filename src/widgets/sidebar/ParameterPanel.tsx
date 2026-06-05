@@ -4,6 +4,9 @@ import { Button } from '@/shared/ui/Button'
 import { useStudioStore, selectConfig } from '@/app/store'
 import { STRINGS } from '@/shared/constants/strings'
 
+/**
+ * Renders technique-aware sliders and controls for density, size, opacity, stroke, and seed.
+ */
 export function ParameterPanel() {
   const config = useStudioStore(selectConfig)
   const setConfig = useStudioStore((s) => s.setConfig)

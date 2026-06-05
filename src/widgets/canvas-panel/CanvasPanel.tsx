@@ -10,12 +10,18 @@ interface CanvasPanelProps {
   canvasRef: MutableRefObject<Canvas | null>
 }
 
+/**
+ * Main canvas area; owns the Fabric.js canvas, zoom state, and wires generate/cancel actions.
+ */
 export function CanvasPanel({ canvasRef }: CanvasPanelProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [zoomPct, setZoomPct] = useState(100)
   const { elementRef, fitCanvas } = useFabricCanvas(containerRef, canvasRef, setZoomPct)
   const { trigger, cancel } = useGenerate()
 
+  /**
+   * Stable callback that fires generation with the current canvas ref.
+   */
   const handleGenerate = useCallback(() => trigger(canvasRef), [trigger, canvasRef])
 
   return (

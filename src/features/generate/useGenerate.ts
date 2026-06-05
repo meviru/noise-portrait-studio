@@ -18,8 +18,18 @@ interface UseGenerateReturn {
   cancel: () => void
 }
 
+/**
+ * Manages the generation web worker lifecycle and exposes trigger/cancel actions.
+ * @returns Object with `trigger` to start generation and `cancel` to abort it.
+ */
 export function useGenerate(): UseGenerateReturn {
+  /**
+   * Persistent worker instance; reused across renders to avoid re-instantiation cost.
+   */
   const workerRef = useRef<Worker | null>(null)
+  /**
+   * Incremented on every trigger and cancel; stale worker results are dropped when their generation doesn't match.
+   */
   const generationRef = useRef(0)
 
   const config = useStudioStore(selectConfig)
@@ -30,6 +40,10 @@ export function useGenerate(): UseGenerateReturn {
   const setRenderState = useStudioStore((s) => s.setRenderState)
   const setRenderProgress = useStudioStore((s) => s.setRenderProgress)
 
+  /**
+   * Lazily creates the generate worker on first call; returns the existing instance on subsequent calls.
+   * @returns The active `Worker` instance.
+   */
   function getWorker(): Worker {
     if (!workerRef.current) {
       workerRef.current = new Worker(new URL('./generateWorker.ts', import.meta.url), {
@@ -39,6 +53,10 @@ export function useGenerate(): UseGenerateReturn {
     return workerRef.current
   }
 
+  /**
+   * Serializes config and brightness data, posts to the worker, and handles rendering the result.
+   * @param canvasRef - Ref to the Fabric canvas that will receive the rendered output.
+   */
   const trigger = useCallback(
     (canvasRef: MutableRefObject<Canvas | null>) => {
       if (!brightnessMap || !canvasRef.current) return
@@ -108,6 +126,9 @@ export function useGenerate(): UseGenerateReturn {
     [config, brightnessMap, rgbaMap, brightnessWidth, brightnessHeight, setRenderState, setRenderProgress]
   )
 
+  /**
+   * Abandons the in-flight generation by bumping the generation counter and resetting render state.
+   */
   const cancel = useCallback(() => {
     generationRef.current++
     setRenderState('idle')

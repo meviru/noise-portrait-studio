@@ -8,12 +8,19 @@ import { ParameterPanel } from '@/widgets/sidebar/ParameterPanel'
 import { PalettePicker } from '@/widgets/sidebar/PalettePicker'
 import { type TabId, TABS } from './utility/constants/mobile-nav.constant'
 
+/**
+ * Fixed bottom tab bar for mobile; opens a slide-up panel for the active tab's controls.
+ */
 export function MobileNav() {
   const [activeTab, setActiveTab] = useState<TabId | null>(null)
   const { handleFile, isProcessing, error, clearError } = useImageUpload()
   const imageDataURL = useStudioStore((s) => s.imageDataURL)
   const hasImage = imageDataURL !== null
 
+  /**
+   * Toggles the active tab; pressing the same tab again closes the panel.
+   * @param id - The tab to activate or deactivate.
+   */
   function handleTabPress(id: TabId) {
     setActiveTab((prev) => (prev === id ? null : id))
   }

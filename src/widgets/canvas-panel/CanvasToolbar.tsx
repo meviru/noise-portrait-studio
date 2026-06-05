@@ -23,6 +23,9 @@ interface CanvasToolbarProps {
   canvasRef: MutableRefObject<Canvas | null>
 }
 
+/**
+ * Top toolbar with the app title, zoom readout, fit, export dropdown, and generate/cancel button.
+ */
 export function CanvasToolbar({
   onGenerate,
   onCancel,
@@ -38,7 +41,13 @@ export function CanvasToolbar({
   const [isExportOpen, setIsExportOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  /**
+   * True when a completed render is available for export.
+   */
   const canExport = renderState === 'done'
+  /**
+   * True while the worker is still computing or rendering.
+   */
   const isComputing = renderState === 'computing' || renderState === 'rendering'
 
   useEffect(() => {
@@ -52,6 +61,10 @@ export function CanvasToolbar({
     return () => document.removeEventListener('mousedown', onOutsideClick)
   }, [isExportOpen])
 
+  /**
+   * Closes the export dropdown and triggers the export pipeline for the selected format.
+   * @param fmt - The export format chosen from the dropdown.
+   */
   const handleExport = useCallback(
     (fmt: ExportFormat) => {
       setIsExportOpen(false)

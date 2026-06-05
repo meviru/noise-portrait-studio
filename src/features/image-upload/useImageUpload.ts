@@ -9,11 +9,19 @@ interface UseImageUploadReturn {
   clearError: () => void
 }
 
+/**
+ * Reads an image file, validates type, and extracts brightness and RGBA maps into the store.
+ * @returns Object with `handleFile`, `isProcessing`, `error`, and `clearError`.
+ */
 export function useImageUpload(): UseImageUploadReturn {
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const setImage = useStudioStore((s) => s.setImage)
 
+  /**
+   * Validates file type, reads it as a data URL, and runs brightness extraction into the store.
+   * @param file - The image file selected by the user.
+   */
   const handleFile = useCallback(
     (file: File) => {
       if (!file.type.startsWith('image/')) {
@@ -53,6 +61,9 @@ export function useImageUpload(): UseImageUploadReturn {
     [setImage]
   )
 
+  /**
+   * Resets the error to null.
+   */
   const clearError = useCallback(() => setError(null), [])
 
   return { isProcessing, error, handleFile, clearError }

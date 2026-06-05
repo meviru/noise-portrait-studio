@@ -5,6 +5,9 @@ interface ProgressBarProps {
   visible: boolean
 }
 
+/**
+ * Thin animated progress bar pinned to the top of its container; fades in/out with `visible`.
+ */
 export function ProgressBar({ value, visible }: ProgressBarProps) {
   return (
     <AnimatePresence>

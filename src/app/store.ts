@@ -37,6 +37,9 @@ interface StudioStore {
   setRenderProgress: (n: number) => void
 }
 
+/**
+ * Global Zustand store for studio state — image data, render config, active preset, and render progress.
+ */
 export const useStudioStore = create<StudioStore>()(
   immer((set) => ({
     imageDataURL: null,
@@ -90,7 +93,9 @@ export const useStudioStore = create<StudioStore>()(
   }))
 )
 
-// Stable selectors
+/**
+ * Stable selectors — pass directly to `useStudioStore` to avoid inline arrow re-creation.
+ */
 export const selectConfig = (s: StudioStore) => s.config
 export const selectRenderState = (s: StudioStore) => s.renderState
 export const selectRenderProgress = (s: StudioStore) => s.renderProgress

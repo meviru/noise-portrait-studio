@@ -14,11 +14,20 @@ interface UseExportReturn {
   clearExportError: () => void
 }
 
+/**
+ * Handles SVG, PNG, and PDF export from the Fabric canvas with loading and error state.
+ * @returns Object with `exportCanvas`, `isExporting`, `exportError`, and `clearExportError`.
+ */
 export function useExport(): UseExportReturn {
   const [isExporting, setIsExporting] = useState(false)
   const [exportError, setExportError] = useState<string | null>(null)
   const renderState = useStudioStore(selectRenderState)
 
+  /**
+   * Runs the appropriate exporter for `format` and triggers a file download.
+   * @param format - The target export format: `svg`, `png`, or `pdf`.
+   * @param canvasRef - Ref to the Fabric canvas to export.
+   */
   const exportCanvas = useCallback(
     async (format: ExportFormat, canvasRef: MutableRefObject<Canvas | null>) => {
       if (renderState !== 'done') return
@@ -43,6 +52,9 @@ export function useExport(): UseExportReturn {
     [renderState]
   )
 
+  /**
+   * Resets the export error to null.
+   */
   const clearExportError = useCallback(() => setExportError(null), [])
 
   return { exportCanvas, isExporting, exportError, clearExportError }
