@@ -3,7 +3,7 @@ import { clamp } from '@/shared/lib/utils/clamp'
 import { mapRange } from '@/shared/lib/utils/mapRange'
 import { RENDER_BATCH_SIZE, PALETTES, CANVAS_WIDTH, CANVAS_HEIGHT } from '@/shared/constants/canvas.constants'
 import type { WorkerPayload } from '@/entities/stroke-data/StrokeData.types'
-import { ColorMode } from '@/shared/constants/shared.constant'
+import { ColorMode, PayloadType } from '@/shared/constants/shared.constant'
 import type { RenderConfig } from '@/shared/constants/shared.constant'
 
 function sampleAt(
@@ -102,7 +102,7 @@ export async function renderToFabric(
   const items = payload.items
   const total = items.length
 
-  if (payload.type === 'dots') {
+  if (payload.type === PayloadType.Dots) {
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const dot of chunk) {
@@ -124,7 +124,7 @@ export async function renderToFabric(
       onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
       await new Promise<void>((r) => setTimeout(r, 0))
     }
-  } else if (payload.type === 'strokes') {
+  } else if (payload.type === PayloadType.Strokes) {
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const stroke of chunk) {
@@ -146,7 +146,7 @@ export async function renderToFabric(
       onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
       await new Promise<void>((r) => setTimeout(r, 0))
     }
-  } else if (payload.type === 'polys') {
+  } else if (payload.type === PayloadType.Polys) {
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const tri of chunk) {
@@ -168,7 +168,7 @@ export async function renderToFabric(
       onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
       await new Promise<void>((r) => setTimeout(r, 0))
     }
-  } else if (payload.type === 'rects') {
+  } else if (payload.type === PayloadType.Rects) {
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const rect of chunk) {
@@ -193,7 +193,7 @@ export async function renderToFabric(
       onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
       await new Promise<void>((r) => setTimeout(r, 0))
     }
-  } else if (payload.type === 'chars') {
+  } else if (payload.type === PayloadType.Chars) {
     const fontSize = Math.round((CANVAS_HEIGHT / config.density) * 0.9)
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)

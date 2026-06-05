@@ -16,6 +16,18 @@ export enum TechniqueId {
 }
 
 /**
+ * Discriminant tag on WorkerPayload — identifies the item array's element type.
+ */
+export enum PayloadType {
+  Dots = 'dots',
+  Strokes = 'strokes',
+  Paths = 'paths',
+  Polys = 'polys',
+  Rects = 'rects',
+  Chars = 'chars',
+}
+
+/**
  * Color source used when drawing each rendered element.
  */
 export enum ColorMode {

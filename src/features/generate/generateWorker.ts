@@ -10,7 +10,7 @@ import { generateLowPoly } from '@/shared/lib/techniques/lowPoly'
 import { generateMosaic } from '@/shared/lib/techniques/mosaic'
 import { generateAsciiArt } from '@/shared/lib/techniques/asciiArt'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
-import { TechniqueId } from '@/shared/constants/shared.constant'
+import { TechniqueId, PayloadType } from '@/shared/constants/shared.constant'
 
 self.onmessage = (e: MessageEvent<WorkerInput>) => {
   const { config, brightnessBuffer, brightnessWidth, brightnessHeight, generation } = e.data
@@ -33,7 +33,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'dots', items }, generation }
+      result = { payload: { type: PayloadType.Dots, items }, generation }
       break
     }
 
@@ -51,7 +51,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'strokes', items }, generation }
+      result = { payload: { type: PayloadType.Strokes, items }, generation }
       break
     }
 
@@ -67,7 +67,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'strokes', items }, generation }
+      result = { payload: { type: PayloadType.Strokes, items }, generation }
       break
     }
 
@@ -86,7 +86,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'strokes', items }, generation }
+      result = { payload: { type: PayloadType.Strokes, items }, generation }
       break
     }
 
@@ -103,7 +103,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'dots', items }, generation }
+      result = { payload: { type: PayloadType.Dots, items }, generation }
       break
     }
 
@@ -121,7 +121,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'strokes', items }, generation }
+      result = { payload: { type: PayloadType.Strokes, items }, generation }
       break
     }
 
@@ -138,7 +138,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'strokes', items }, generation }
+      result = { payload: { type: PayloadType.Strokes, items }, generation }
       break
     }
 
@@ -154,7 +154,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'polys', items }, generation }
+      result = { payload: { type: PayloadType.Polys, items }, generation }
       break
     }
 
@@ -173,7 +173,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'paths', items }, generation }
+      result = { payload: { type: PayloadType.Paths, items }, generation }
       break
     }
 
@@ -183,7 +183,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         canvasHeight: config.canvasHeight,
         density: config.density,
       })
-      result = { payload: { type: 'rects', items }, generation }
+      result = { payload: { type: PayloadType.Rects, items }, generation }
       break
     }
 
@@ -198,7 +198,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: 'chars', items }, generation }
+      result = { payload: { type: PayloadType.Chars, items }, generation }
       break
     }
   }
