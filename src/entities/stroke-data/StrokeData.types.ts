@@ -13,12 +13,16 @@ export interface TriangleItem {
   b: { x: number; y: number }
   c: { x: number; y: number }
 }
+export interface RectItem { x: number; y: number; w: number; h: number }
+export interface CharItem { x: number; y: number; char: string }
 
 export type WorkerPayload =
   | { type: 'dots'; items: DotItem[] }
   | { type: 'strokes'; items: StrokeItem[] }
   | { type: 'paths'; items: GeneratedPath[] }
   | { type: 'polys'; items: TriangleItem[] }
+  | { type: 'rects'; items: RectItem[] }
+  | { type: 'chars'; items: CharItem[] }
 
 export interface WorkerRenderConfig {
   technique: TechniqueId

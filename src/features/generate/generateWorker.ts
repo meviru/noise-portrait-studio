@@ -7,6 +7,8 @@ import { generateScanline } from '@/shared/lib/techniques/scanline'
 import { generateFlowStrands } from '@/shared/lib/techniques/flowStrands'
 import { generateConcentricRings } from '@/shared/lib/techniques/concentricRings'
 import { generateLowPoly } from '@/shared/lib/techniques/lowPoly'
+import { generateMosaic } from '@/shared/lib/techniques/mosaic'
+import { generateAsciiArt } from '@/shared/lib/techniques/asciiArt'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
 import { TechniqueId } from '@/shared/constants/shared.constant'
 
@@ -172,6 +174,31 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessHeight
       )
       result = { payload: { type: 'paths', items }, generation }
+      break
+    }
+
+    case TechniqueId.Mosaic: {
+      const items = generateMosaic({
+        canvasWidth: config.canvasWidth,
+        canvasHeight: config.canvasHeight,
+        density: config.density,
+      })
+      result = { payload: { type: 'rects', items }, generation }
+      break
+    }
+
+    case TechniqueId.Ascii: {
+      const items = generateAsciiArt(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: 'chars', items }, generation }
       break
     }
   }

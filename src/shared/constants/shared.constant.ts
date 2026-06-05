@@ -11,6 +11,8 @@ export enum TechniqueId {
   FlowStrands = 'flow-strands',
   ConcentricRings = 'concentric-rings',
   LowPoly = 'low-poly',
+  Mosaic = 'mosaic',
+  Ascii = 'ascii',
 }
 
 /**
@@ -224,6 +226,26 @@ export const PRESETS: Preset[] = [
       density: 600,
       opacity: 1.0,
       seed: 4217,
+    },
+  },
+  {
+    id: TechniqueId.Mosaic,
+    label: 'Mosaic',
+    description: 'Solid colour tiles — Roman mosaic / pixel-art portrait',
+    overrides: {
+      technique: TechniqueId.Mosaic,
+      density: 60,
+      opacity: 1.0,
+    },
+  },
+  {
+    id: TechniqueId.Ascii,
+    label: 'ASCII Art',
+    description: 'Character map — brightness mapped to text symbols',
+    overrides: {
+      technique: TechniqueId.Ascii,
+      density: 50,
+      opacity: 0.95,
     },
   },
 ]

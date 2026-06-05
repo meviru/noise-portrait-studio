@@ -17,22 +17,24 @@ export function ParameterPanel() {
   const isFlowStrands = technique === TechniqueId.FlowStrands
   const isRings = technique === TechniqueId.ConcentricRings
   const isLowPoly = technique === TechniqueId.LowPoly
+  const isMosaic = technique === TechniqueId.Mosaic
+  const isAscii = technique === TechniqueId.Ascii
   const isDotTechnique = technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
 
   const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || isScanline
   const showContourLevels = technique === TechniqueId.Contour
   const showCrosshatchLayers = technique === TechniqueId.Crosshatch
   const showDensity = technique !== TechniqueId.Contour
-  const showSizeControls = !isLowPoly
-  const showMaxSize = technique !== TechniqueId.Contour && !isScanline && !isLowPoly
+  const showSizeControls = !isLowPoly && !isMosaic && !isAscii
+  const showMaxSize = technique !== TechniqueId.Contour && !isScanline && !isLowPoly && !isMosaic && !isAscii
   const showScanlineAmplitude = isScanline
   const showStrandLength = isFlowStrands
   const showSeed = technique === TechniqueId.Stipple || isFlowStrands || isLowPoly
 
-  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : isLowPoly ? 'Points' : 'Density'
-  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : isRings ? 20 : isLowPoly ? 200 : 300
-  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : isRings ? 120 : isLowPoly ? 1500 : 4000
-  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : isRings ? 5 : isLowPoly ? 50 : 100
+  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : isLowPoly ? 'Points' : isMosaic ? 'Tiles' : isAscii ? 'Rows' : 'Density'
+  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : isRings ? 20 : isLowPoly ? 200 : isMosaic ? 20 : isAscii ? 20 : 300
+  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : isRings ? 120 : isLowPoly ? 1500 : isMosaic ? 150 : isAscii ? 100 : 4000
+  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : isRings ? 5 : isLowPoly ? 50 : isMosaic ? 5 : isAscii ? 5 : 100
 
   return (
     <div className="flex flex-col gap-3">
