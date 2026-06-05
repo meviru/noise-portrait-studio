@@ -129,7 +129,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Stipple,
     label: 'Stipple',
-    description: 'Dot cloud - dense in shadows, sparse in highlights',
+    description: 'Thousands of tiny dots, like a newspaper photo up close',
     overrides: {
       technique: TechniqueId.Stipple,
       density: 2000,
@@ -142,7 +142,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Hatch,
     label: 'Hatching',
-    description: 'Short strokes following contours - pencil sketch look',
+    description: 'Looks like someone drew you by hand with a pencil',
     overrides: {
       technique: TechniqueId.Hatch,
       density: 1500,
@@ -155,7 +155,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Contour,
     label: 'Contour',
-    description: 'Iso-brightness curves - topographic map of the face',
+    description: 'Like a treasure map, but the treasure is your face',
     overrides: {
       technique: TechniqueId.Contour,
       contourLevels: 8,
@@ -167,7 +167,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Crosshatch,
     label: 'Crosshatch',
-    description: 'Layered strokes at multiple angles - engraving style',
+    description: 'Like your portrait was carved into a coin or banknote',
     overrides: {
       technique: TechniqueId.Crosshatch,
       density: 2000,
@@ -181,7 +181,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Halftone,
     label: 'Halftone',
-    description: 'Staggered dot grid - offset print / CMYK press look',
+    description: 'Old-school comic book dots, pop art ready to frame',
     overrides: {
       technique: TechniqueId.Halftone,
       density: 1500,
@@ -193,7 +193,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Scanline,
     label: 'Scanline',
-    description: 'Horizontal lines that ripple with image brightness',
+    description: 'Wavy horizontal lines, like a retro TV screen glitching',
     overrides: {
       technique: TechniqueId.Scanline,
       density: 80,
@@ -206,7 +206,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.FlowStrands,
     label: 'Flow Strands',
-    description: 'Curves flowing along brightness contours - pencil sketch look',
+    description: 'Smooth flowing lines that wrap around your features like silk',
     overrides: {
       technique: TechniqueId.FlowStrands,
       density: 400,
@@ -220,7 +220,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.ConcentricRings,
     label: 'Rings',
-    description: 'Concentric arcs — thick in shadows, vanishing in highlights',
+    description: 'Rings radiating outward like dropping a stone in water',
     overrides: {
       technique: TechniqueId.ConcentricRings,
       density: 70,
@@ -232,7 +232,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.LowPoly,
     label: 'Low Poly',
-    description: 'Delaunay triangles — faceted crystal portrait with finer detail at edges',
+    description: 'Your face shattered into geometric shapes like stained glass',
     overrides: {
       technique: TechniqueId.LowPoly,
       density: 600,
@@ -243,7 +243,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Mosaic,
     label: 'Mosaic',
-    description: 'Solid colour tiles — Roman mosaic / pixel-art portrait',
+    description: 'Chunky coloured squares, part ancient mosaic and part pixel art',
     overrides: {
       technique: TechniqueId.Mosaic,
       density: 60,
@@ -253,7 +253,7 @@ export const PRESETS: Preset[] = [
   {
     id: TechniqueId.Ascii,
     label: 'ASCII Art',
-    description: 'Character map — brightness mapped to text symbols',
+    description: 'Your face spelled out in keyboard characters, pure internet nostalgia',
     overrides: {
       technique: TechniqueId.Ascii,
       density: 50,
