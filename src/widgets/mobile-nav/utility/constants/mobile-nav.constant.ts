@@ -6,19 +6,24 @@ import {
 } from '@tabler/icons-react'
 import { STRINGS } from '@/shared/constants/strings'
 
-export type TabId = 'photo' | 'preset' | 'parameters' | 'palette'
+export enum TabId {
+  Photo = 'photo',
+  Preset = 'preset',
+  Parameters = 'parameters',
+  Palette = 'palette',
+}
 
 export const TABS = [
-  { id: 'photo' as TabId, label: 'Photo', panelLabel: 'Photo', Icon: IconPhoto },
-  { id: 'preset' as TabId, label: 'Style', panelLabel: STRINGS.sidebar.presets, Icon: IconBrush },
+  { id: TabId.Photo, label: 'Photo', panelLabel: 'Photo', Icon: IconPhoto },
+  { id: TabId.Preset, label: 'Style', panelLabel: STRINGS.sidebar.presets, Icon: IconBrush },
   {
-    id: 'parameters' as TabId,
+    id: TabId.Parameters,
     label: 'Parameters',
     panelLabel: STRINGS.sidebar.parameters,
     Icon: IconAdjustmentsHorizontal,
   },
   {
-    id: 'palette' as TabId,
+    id: TabId.Palette,
     label: 'Palette',
     panelLabel: STRINGS.sidebar.palette,
     Icon: IconPalette,

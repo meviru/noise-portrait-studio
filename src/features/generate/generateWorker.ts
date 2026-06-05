@@ -3,6 +3,7 @@ import { generateHatch } from '@/shared/lib/techniques/hatch'
 import { generateContour } from '@/shared/lib/techniques/contour'
 import { generateCrosshatch } from '@/shared/lib/techniques/crosshatch'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
+import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
 
 self.onmessage = (e: MessageEvent<WorkerInput>) => {
   const { config, brightnessBuffer, brightnessWidth, brightnessHeight, generation } = e.data
@@ -11,7 +12,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
   let result: WorkerResult
 
   switch (config.technique) {
-    case 'stipple': {
+    case TechniqueId.Stipple: {
       const items = generateStipple(
         {
           canvasWidth: config.canvasWidth,
@@ -29,7 +30,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
       break
     }
 
-    case 'hatch': {
+    case TechniqueId.Hatch: {
       const items = generateHatch(
         {
           canvasWidth: config.canvasWidth,
@@ -47,7 +48,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
       break
     }
 
-    case 'contour': {
+    case TechniqueId.Contour: {
       const items = generateContour(
         {
           canvasWidth: config.canvasWidth,
@@ -63,7 +64,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
       break
     }
 
-    case 'crosshatch': {
+    case TechniqueId.Crosshatch: {
       const items = generateCrosshatch(
         {
           canvasWidth: config.canvasWidth,

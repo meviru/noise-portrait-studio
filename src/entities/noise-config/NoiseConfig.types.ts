@@ -1,5 +1,5 @@
-export type TechniqueId = 'stipple' | 'hatch' | 'contour' | 'crosshatch'
-export type ColorMode = 'mono' | 'photo' | 'palette'
+import { TechniqueId, ColorMode } from './utility/constants/noise-config.constant'
+export { TechniqueId, ColorMode }
 
 // Kept as alias so existing imports of PresetId still compile
 export type PresetId = TechniqueId

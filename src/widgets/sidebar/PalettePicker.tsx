@@ -1,6 +1,6 @@
 import { PALETTES } from '@/shared/constants/canvas.constants'
 import { useStudioStore, selectConfig } from '@/app/store'
-import { PALETTE_LABELS, MONO_COLORS, COLOR_MODES } from './utility/constants/sidebar.constant'
+import { PALETTE_LABELS, MONO_COLORS, COLOR_MODES, ColorMode } from './utility/constants/sidebar.constant'
 
 /**
  * Lets the user switch between mono, photo, and palette color modes and pick a specific color or palette.
@@ -29,7 +29,7 @@ export function PalettePicker() {
         ))}
       </div>
 
-      {config.colorMode === 'mono' && (
+      {config.colorMode === ColorMode.Mono && (
         <div className="flex gap-2 flex-wrap">
           {MONO_COLORS.map(({ hex, label }) => (
             <button
@@ -49,7 +49,7 @@ export function PalettePicker() {
         </div>
       )}
 
-      {config.colorMode === 'palette' && (
+      {config.colorMode === ColorMode.Palette && (
         <div className="flex gap-2 flex-wrap">
           {PALETTES.map((palette, i) => {
             const color = palette[0] ?? '#1a1a1a'
@@ -73,7 +73,7 @@ export function PalettePicker() {
         </div>
       )}
 
-      {config.colorMode === 'photo' && (
+      {config.colorMode === ColorMode.Photo && (
         <p className="text-[10px] text-neutral-500 leading-snug">
           Each element samples color directly from the uploaded photo.
         </p>

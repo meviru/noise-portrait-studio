@@ -1,4 +1,5 @@
-export type ExportFormat = 'svg' | 'png' | 'pdf'
+import { ExportFormat } from './utility/constants/export-options.constant'
+export { ExportFormat }
 
 export interface ExportOptions {
   format: ExportFormat

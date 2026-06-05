@@ -4,7 +4,7 @@ import { Button } from '@/shared/ui/Button'
 import { useStudioStore, selectRenderState, RenderState } from '@/app/store'
 import { useExport } from '@/features/export/useExport'
 import { STRINGS } from '@/shared/constants/strings'
-import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
+import { ExportFormat } from '@/entities/export-options/ExportOptions.types'
 
 interface ExportPanelProps {
   canvasRef: MutableRefObject<Canvas | null>
@@ -18,7 +18,7 @@ export function ExportPanel({ canvasRef }: ExportPanelProps) {
   return (
     <div className="flex flex-col gap-1 shrink-0">
       <div className="flex gap-2 p-3 border-t border-neutral-800">
-        {(['svg', 'png', 'pdf'] as ExportFormat[]).map((fmt) => (
+        {[ExportFormat.SVG, ExportFormat.PNG, ExportFormat.PDF].map((fmt) => (
           <Button
             key={fmt}
             disabled={!canExport || isExporting}

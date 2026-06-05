@@ -1,4 +1,5 @@
-import type { TechniqueId, RenderConfig } from '@/entities/noise-config/NoiseConfig.types'
+import type { RenderConfig } from '@/entities/noise-config/NoiseConfig.types'
+import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
 import { DEFAULT_RENDER_CONFIG } from '@/entities/noise-config/NoiseConfig.defaults'
 
 export interface Preset {
@@ -10,11 +11,11 @@ export interface Preset {
 
 export const PRESETS: Preset[] = [
   {
-    id: 'stipple',
+    id: TechniqueId.Stipple,
     label: 'Stipple',
     description: 'Dot cloud - dense in shadows, sparse in highlights',
     overrides: {
-      technique: 'stipple',
+      technique: TechniqueId.Stipple,
       density: 2000,
       minSize: 1.0,
       maxSize: 5.0,
@@ -23,11 +24,11 @@ export const PRESETS: Preset[] = [
     },
   },
   {
-    id: 'hatch',
+    id: TechniqueId.Hatch,
     label: 'Hatching',
     description: 'Short strokes following contours - pencil sketch look',
     overrides: {
-      technique: 'hatch',
+      technique: TechniqueId.Hatch,
       density: 1500,
       minSize: 0.6,
       maxSize: 2.2,
@@ -36,11 +37,11 @@ export const PRESETS: Preset[] = [
     },
   },
   {
-    id: 'contour',
+    id: TechniqueId.Contour,
     label: 'Contour',
     description: 'Iso-brightness curves - topographic map of the face',
     overrides: {
-      technique: 'contour',
+      technique: TechniqueId.Contour,
       contourLevels: 8,
       minSize: 1.0,
       maxSize: 1.0,
@@ -48,11 +49,11 @@ export const PRESETS: Preset[] = [
     },
   },
   {
-    id: 'crosshatch',
+    id: TechniqueId.Crosshatch,
     label: 'Crosshatch',
     description: 'Layered strokes at multiple angles - engraving style',
     overrides: {
-      technique: 'crosshatch',
+      technique: TechniqueId.Crosshatch,
       density: 2000,
       minSize: 0.5,
       maxSize: 1.8,

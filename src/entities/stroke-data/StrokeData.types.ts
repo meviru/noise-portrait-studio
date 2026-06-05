@@ -1,3 +1,6 @@
+import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
+export { TechniqueId }
+
 // Kept for existing noise-engine unit tests
 export interface PathPoint { x: number; y: number }
 export type GeneratedPath = PathPoint[]
@@ -11,7 +14,7 @@ export type WorkerPayload =
   | { type: 'strokes'; items: StrokeItem[] }
 
 export interface WorkerRenderConfig {
-  technique: 'stipple' | 'hatch' | 'contour' | 'crosshatch'
+  technique: TechniqueId
   canvasWidth: number
   canvasHeight: number
   density: number

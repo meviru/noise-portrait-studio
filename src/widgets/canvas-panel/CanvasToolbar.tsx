@@ -1,5 +1,5 @@
 import { selectConfig, selectRenderState, useStudioStore, RenderState } from '@/app/store'
-import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
+import { ExportFormat } from '@/entities/export-options/ExportOptions.types'
 import { useExport } from '@/features/export/useExport'
 import { STRINGS } from '@/shared/constants/strings'
 import { Button } from '@/shared/ui/Button'
@@ -123,7 +123,7 @@ export function CanvasToolbar({
 
           {isExportOpen && (
             <div className="absolute right-0 top-full mt-1 w-36 bg-neutral-800 border border-neutral-700 rounded-md shadow-2xl z-50 overflow-hidden">
-              {(['svg', 'png', 'pdf'] as ExportFormat[]).map((fmt) => (
+              {[ExportFormat.SVG, ExportFormat.PNG, ExportFormat.PDF].map((fmt) => (
                 <button
                   key={fmt}
                   onClick={() => handleExport(fmt)}

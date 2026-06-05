@@ -1,10 +1,11 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { DEFAULT_RENDER_CONFIG } from '@/entities/noise-config/NoiseConfig.defaults'
-import type { RenderConfig, TechniqueId } from '@/entities/noise-config/NoiseConfig.types'
+import type { RenderConfig } from '@/entities/noise-config/NoiseConfig.types'
+import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
 import { RenderState } from './utility/constants/studio.constant'
 
-export { RenderState }
+export { RenderState, TechniqueId }
 
 interface StudioStore {
   // Image slice
@@ -75,7 +76,7 @@ export const useStudioStore = create<StudioStore>()(
         state.config = { ...DEFAULT_RENDER_CONFIG }
       }),
 
-    activePreset: 'stipple',
+    activePreset: TechniqueId.Stipple,
     setPreset: (id) =>
       set((state) => {
         state.activePreset = id

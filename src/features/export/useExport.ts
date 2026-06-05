@@ -5,7 +5,7 @@ import { exportSVG } from './exportSVG'
 import { exportPNG } from './exportPNG'
 import { exportPDF } from './exportPDF'
 import type { Canvas } from 'fabric'
-import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
+import { ExportFormat } from '@/entities/export-options/ExportOptions.types'
 
 interface UseExportReturn {
   exportCanvas: (format: ExportFormat, canvasRef: MutableRefObject<Canvas | null>) => Promise<void>
@@ -37,9 +37,9 @@ export function useExport(): UseExportReturn {
       setExportError(null)
 
       const result =
-        format === 'svg'
+        format === ExportFormat.SVG
           ? exportSVG(canvasRef.current)
-          : format === 'png'
+          : format === ExportFormat.PNG
             ? exportPNG(canvasRef.current)
             : await exportPDF(canvasRef.current)
 

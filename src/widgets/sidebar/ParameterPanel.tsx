@@ -2,6 +2,7 @@ import { IconDice5 } from '@tabler/icons-react'
 import { Slider } from '@/shared/ui/Slider'
 import { Button } from '@/shared/ui/Button'
 import { useStudioStore, selectConfig } from '@/app/store'
+import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
 import { STRINGS } from '@/shared/constants/strings'
 
 /**
@@ -12,11 +13,11 @@ export function ParameterPanel() {
   const setConfig = useStudioStore((s) => s.setConfig)
   const { technique } = config
 
-  const showStrokeLength = technique === 'hatch' || technique === 'crosshatch'
-  const showContourLevels = technique === 'contour'
-  const showCrosshatchLayers = technique === 'crosshatch'
-  const showDensity = technique !== 'contour'
-  const showSeed = technique === 'stipple'
+  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch
+  const showContourLevels = technique === TechniqueId.Contour
+  const showCrosshatchLayers = technique === TechniqueId.Crosshatch
+  const showDensity = technique !== TechniqueId.Contour
+  const showSeed = technique === TechniqueId.Stipple
 
   return (
     <div className="flex flex-col gap-3">
@@ -32,7 +33,7 @@ export function ParameterPanel() {
       )}
 
       <Slider
-        label={technique === 'stipple' ? 'Min Dot Size' : 'Min Weight'}
+        label={technique === TechniqueId.Stipple ? 'Min Dot Size' : 'Min Weight'}
         min={0.3}
         max={3.0}
         step={0.1}
@@ -41,9 +42,9 @@ export function ParameterPanel() {
         formatValue={(v) => v.toFixed(1)}
       />
 
-      {technique !== 'contour' && (
+      {technique !== TechniqueId.Contour && (
         <Slider
-          label={technique === 'stipple' ? 'Max Dot Size' : 'Max Weight'}
+          label={technique === TechniqueId.Stipple ? 'Max Dot Size' : 'Max Weight'}
           min={1.0}
           max={10.0}
           step={0.5}

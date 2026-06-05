@@ -4,6 +4,7 @@ import { mapRange } from '@/shared/lib/utils/mapRange'
 import { RENDER_BATCH_SIZE, PALETTES, CANVAS_WIDTH, CANVAS_HEIGHT } from '@/shared/constants/canvas.constants'
 import type { WorkerPayload } from '@/entities/stroke-data/StrokeData.types'
 import type { RenderConfig } from '@/entities/noise-config/NoiseConfig.types'
+import { ColorMode } from '@/entities/noise-config/utility/constants/noise-config.constant'
 
 function sampleAt(
   x: number,
@@ -28,10 +29,10 @@ function resolveColor(
   config: RenderConfig
 ): string {
   switch (config.colorMode) {
-    case 'mono':
+    case ColorMode.Mono:
       return config.monoColor
 
-    case 'photo': {
+    case ColorMode.Photo: {
       if (!rgbaMap) return config.monoColor
       const mx = Math.round((x / CANVAS_WIDTH) * (mapWidth - 1))
       const my = Math.round((y / CANVAS_HEIGHT) * (mapHeight - 1))
@@ -39,7 +40,7 @@ function resolveColor(
       return `rgb(${rgbaMap[i] ?? 0},${rgbaMap[i + 1] ?? 0},${rgbaMap[i + 2] ?? 0})`
     }
 
-    case 'palette': {
+    case ColorMode.Palette: {
       const brightness = brightnessMap ? sampleAt(x, y, brightnessMap, mapWidth, mapHeight) : 0.5
       const palette = PALETTES[config.paletteIndex] ?? PALETTES[0]!
       const idx = Math.round(mapRange(1 - brightness, 0, 1, 0, palette.length - 1))
@@ -49,7 +50,7 @@ function resolveColor(
 }
 
 function getBgColor(config: RenderConfig): string {
-  if (config.colorMode !== 'mono') return '#f5f5f5'
+  if (config.colorMode !== ColorMode.Mono) return '#f5f5f5'
   // Light stroke → dark background; dark stroke → light background
   const hex = config.monoColor.replace('#', '')
   const r = parseInt(hex.slice(0, 2), 16) / 255

@@ -6,7 +6,7 @@ import { useStudioStore } from '@/app/store'
 import { PresetGrid } from '@/widgets/sidebar/PresetGrid'
 import { ParameterPanel } from '@/widgets/sidebar/ParameterPanel'
 import { PalettePicker } from '@/widgets/sidebar/PalettePicker'
-import { type TabId, TABS } from './utility/constants/mobile-nav.constant'
+import { TabId, TABS } from './utility/constants/mobile-nav.constant'
 
 /**
  * Fixed bottom tab bar for mobile; opens a slide-up panel for the active tab's controls.
@@ -47,7 +47,7 @@ export function MobileNav() {
 
           <div className="overflow-y-auto flex-1">
             <div className="flex flex-col gap-4 p-4">
-              {activeTab === 'photo' && (
+              {activeTab === TabId.Photo && (
                 <>
                   <DropZone
                     onFile={handleFile}
@@ -66,9 +66,9 @@ export function MobileNav() {
                   )}
                 </>
               )}
-              {activeTab === 'preset' && <PresetGrid />}
-              {activeTab === 'parameters' && <ParameterPanel />}
-              {activeTab === 'palette' && <PalettePicker />}
+              {activeTab === TabId.Preset && <PresetGrid />}
+              {activeTab === TabId.Parameters && <ParameterPanel />}
+              {activeTab === TabId.Palette && <PalettePicker />}
             </div>
           </div>
         </div>

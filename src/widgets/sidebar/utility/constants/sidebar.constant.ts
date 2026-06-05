@@ -1,4 +1,5 @@
-import type { ColorMode } from '@/entities/noise-config/NoiseConfig.types'
+import { ColorMode } from '@/entities/noise-config/utility/constants/noise-config.constant'
+export { ColorMode }
 
 export const PALETTE_LABELS = [
   'Charcoal', 'Slate', 'Amethyst', 'Forest',
@@ -15,7 +16,7 @@ export const MONO_COLORS: Array<{ hex: string; label: string }> = [
 ]
 
 export const COLOR_MODES: Array<{ id: ColorMode; label: string }> = [
-  { id: 'mono', label: 'Mono' },
-  { id: 'photo', label: 'Photo' },
-  { id: 'palette', label: 'Palette' },
+  { id: ColorMode.Mono, label: 'Mono' },
+  { id: ColorMode.Photo, label: 'Photo' },
+  { id: ColorMode.Palette, label: 'Palette' },
 ]
