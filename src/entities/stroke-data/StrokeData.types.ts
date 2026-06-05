@@ -1,4 +1,4 @@
-import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
+import { TechniqueId } from '@/shared/constants/shared.constant'
 export { TechniqueId }
 
 // Kept for existing noise-engine unit tests

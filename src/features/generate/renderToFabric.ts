@@ -3,8 +3,8 @@ import { clamp } from '@/shared/lib/utils/clamp'
 import { mapRange } from '@/shared/lib/utils/mapRange'
 import { RENDER_BATCH_SIZE, PALETTES, CANVAS_WIDTH, CANVAS_HEIGHT } from '@/shared/constants/canvas.constants'
 import type { WorkerPayload } from '@/entities/stroke-data/StrokeData.types'
-import type { RenderConfig } from '@/entities/noise-config/NoiseConfig.types'
-import { ColorMode } from '@/entities/noise-config/utility/constants/noise-config.constant'
+import { ColorMode } from '@/shared/constants/shared.constant'
+import type { RenderConfig } from '@/shared/constants/shared.constant'
 
 function sampleAt(
   x: number,

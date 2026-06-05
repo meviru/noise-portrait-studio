@@ -3,7 +3,7 @@ import { generateHatch } from '@/shared/lib/techniques/hatch'
 import { generateContour } from '@/shared/lib/techniques/contour'
 import { generateCrosshatch } from '@/shared/lib/techniques/crosshatch'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
-import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
+import { TechniqueId } from '@/shared/constants/shared.constant'
 
 self.onmessage = (e: MessageEvent<WorkerInput>) => {
   const { config, brightnessBuffer, brightnessWidth, brightnessHeight, generation } = e.data

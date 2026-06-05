@@ -1,9 +1,7 @@
 import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
-import { DEFAULT_RENDER_CONFIG } from '@/entities/noise-config/NoiseConfig.defaults'
-import type { RenderConfig } from '@/entities/noise-config/NoiseConfig.types'
-import { TechniqueId } from '@/entities/noise-config/utility/constants/noise-config.constant'
-import { RenderState } from './utility/constants/studio.constant'
+import { TechniqueId, RenderState, DEFAULT_RENDER_CONFIG } from '@/shared/constants/shared.constant'
+import type { RenderConfig } from '@/shared/constants/shared.constant'
 
 export { RenderState, TechniqueId }
 

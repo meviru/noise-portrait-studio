@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useStudioStore, selectConfig, selectActivePreset } from '@/app/store'
 import { applyPreset } from './presets.config'
-import type { TechniqueId } from '@/entities/noise-config/NoiseConfig.types'
+import type { TechniqueId } from '@/shared/constants/shared.constant'
 
 /**
  * Returns the active preset id and a stable callback to apply a new preset.

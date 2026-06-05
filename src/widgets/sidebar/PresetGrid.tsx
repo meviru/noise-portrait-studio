@@ -1,4 +1,4 @@
-import { PRESETS } from '@/features/presets/presets.config'
+import { PRESETS } from '@/shared/constants/shared.constant'
 import { usePreset } from '@/features/presets/usePreset'
 
 /**

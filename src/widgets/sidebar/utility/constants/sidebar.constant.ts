@@ -1,5 +1,4 @@
-import { ColorMode } from '@/entities/noise-config/utility/constants/noise-config.constant'
-export { ColorMode }
+import { ColorMode } from '@/shared/constants/shared.constant'
 
 export const PALETTE_LABELS = [
   'Charcoal', 'Slate', 'Amethyst', 'Forest',

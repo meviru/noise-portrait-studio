@@ -1,6 +1,7 @@
 import { PALETTES } from '@/shared/constants/canvas.constants'
 import { useStudioStore, selectConfig } from '@/app/store'
-import { PALETTE_LABELS, MONO_COLORS, COLOR_MODES, ColorMode } from './utility/constants/sidebar.constant'
+import { ColorMode } from '@/shared/constants/shared.constant'
+import { PALETTE_LABELS, MONO_COLORS, COLOR_MODES } from './utility/constants/sidebar.constant'
 
 /**
  * Lets the user switch between mono, photo, and palette color modes and pick a specific color or palette.
