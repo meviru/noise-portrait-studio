@@ -15,8 +15,7 @@ export default defineConfig({
       output: {
         manualChunks: (id: string) => {
           if (id.includes('/node_modules/fabric')) return 'fabric'
-          if (id.includes('/node_modules/simplex-noise')) return 'simplex-noise'
-          if (id.includes('/node_modules/framer-motion')) return 'framer-motion'
+if (id.includes('/node_modules/framer-motion')) return 'framer-motion'
           if (id.includes('/node_modules/jspdf')) return 'jspdf'
           if (id.includes('/node_modules/zustand')) return 'zustand'
         },
