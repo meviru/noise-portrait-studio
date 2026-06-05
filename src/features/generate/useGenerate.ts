@@ -109,6 +109,7 @@ export function useGenerate(): UseGenerateReturn {
           strokeLength: config.strokeLength,
           contourLevels: config.contourLevels,
           crosshatchLayers: config.crosshatchLayers,
+          scanlineAmplitude: config.scanlineAmplitude,
           seed: config.seed,
         },
         brightnessBuffer: bufferClone,

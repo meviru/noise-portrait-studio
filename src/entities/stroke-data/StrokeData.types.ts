@@ -23,6 +23,7 @@ export interface WorkerRenderConfig {
   strokeLength: number
   contourLevels: number
   crosshatchLayers: number
+  scanlineAmplitude: number
   seed: number
 }
 

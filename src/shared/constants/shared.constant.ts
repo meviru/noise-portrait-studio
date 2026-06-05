@@ -6,6 +6,8 @@ export enum TechniqueId {
   Hatch = 'hatch',
   Contour = 'contour',
   Crosshatch = 'crosshatch',
+  Halftone = 'halftone',
+  Scanline = 'scanline',
 }
 
 /**
@@ -63,6 +65,9 @@ export interface RenderConfig {
   // Crosshatch
   crosshatchLayers: number // 2 or 3
 
+  // Scanline
+  scanlineAmplitude: number // max vertical deflection in px
+
   // Stipple randomness
   seed: number
 }
@@ -82,6 +87,7 @@ export const DEFAULT_RENDER_CONFIG: RenderConfig = {
   strokeLength: 22,
   contourLevels: 8,
   crosshatchLayers: 2,
+  scanlineAmplitude: 20,
   seed: 4217,
 }
 
@@ -149,6 +155,31 @@ export const PRESETS: Preset[] = [
       opacity: 0.8,
       strokeLength: 20,
       crosshatchLayers: 3,
+    },
+  },
+  {
+    id: TechniqueId.Halftone,
+    label: 'Halftone',
+    description: 'Staggered dot grid - offset print / CMYK press look',
+    overrides: {
+      technique: TechniqueId.Halftone,
+      density: 1500,
+      minSize: 0.5,
+      maxSize: 6.5,
+      opacity: 1.0,
+    },
+  },
+  {
+    id: TechniqueId.Scanline,
+    label: 'Scanline',
+    description: 'Horizontal lines that ripple with image brightness',
+    overrides: {
+      technique: TechniqueId.Scanline,
+      density: 80,
+      minSize: 0.8,
+      strokeLength: 6,
+      scanlineAmplitude: 22,
+      opacity: 0.95,
     },
   },
 ]

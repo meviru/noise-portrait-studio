@@ -13,27 +13,36 @@ export function ParameterPanel() {
   const setConfig = useStudioStore((s) => s.setConfig)
   const { technique } = config
 
-  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch
+  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || technique === TechniqueId.Scanline
   const showContourLevels = technique === TechniqueId.Contour
   const showCrosshatchLayers = technique === TechniqueId.Crosshatch
   const showDensity = technique !== TechniqueId.Contour
+  const showMaxSize = technique !== TechniqueId.Contour && technique !== TechniqueId.Scanline
+  const showScanlineAmplitude = technique === TechniqueId.Scanline
   const showSeed = technique === TechniqueId.Stipple
+  const isScanline = technique === TechniqueId.Scanline
 
   return (
     <div className="flex flex-col gap-3">
       {showDensity && (
         <Slider
-          label="Density"
-          min={300}
-          max={4000}
-          step={100}
+          label={isScanline ? 'Lines' : 'Density'}
+          min={isScanline ? 20 : 300}
+          max={isScanline ? 200 : 4000}
+          step={isScanline ? 5 : 100}
           value={config.density}
           onChange={(v) => setConfig({ density: v })}
         />
       )}
 
       <Slider
-        label={technique === TechniqueId.Stipple ? 'Min Dot Size' : 'Min Weight'}
+        label={
+          technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
+            ? 'Min Dot Size'
+            : technique === TechniqueId.Scanline
+              ? 'Line Weight'
+              : 'Min Weight'
+        }
         min={0.3}
         max={3.0}
         step={0.1}
@@ -42,9 +51,9 @@ export function ParameterPanel() {
         formatValue={(v) => v.toFixed(1)}
       />
 
-      {technique !== TechniqueId.Contour && (
+      {showMaxSize && (
         <Slider
-          label={technique === TechniqueId.Stipple ? 'Max Dot Size' : 'Max Weight'}
+          label={technique === TechniqueId.Stipple || technique === TechniqueId.Halftone ? 'Max Dot Size' : 'Max Weight'}
           min={1.0}
           max={10.0}
           step={0.5}
@@ -66,12 +75,24 @@ export function ParameterPanel() {
 
       {showStrokeLength && (
         <Slider
-          label="Stroke Length"
-          min={6}
-          max={60}
-          step={2}
+          label={isScanline ? 'Resolution' : 'Stroke Length'}
+          min={isScanline ? 2 : 6}
+          max={isScanline ? 20 : 60}
+          step={isScanline ? 1 : 2}
           value={config.strokeLength}
           onChange={(v) => setConfig({ strokeLength: v })}
+          formatValue={(v) => `${v}px`}
+        />
+      )}
+
+      {showScanlineAmplitude && (
+        <Slider
+          label="Amplitude"
+          min={5}
+          max={60}
+          step={1}
+          value={config.scanlineAmplitude}
+          onChange={(v) => setConfig({ scanlineAmplitude: v })}
           formatValue={(v) => `${v}px`}
         />
       )}

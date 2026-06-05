@@ -2,6 +2,8 @@ import { generateStipple } from '@/shared/lib/techniques/stipple'
 import { generateHatch } from '@/shared/lib/techniques/hatch'
 import { generateContour } from '@/shared/lib/techniques/contour'
 import { generateCrosshatch } from '@/shared/lib/techniques/crosshatch'
+import { generateHalftone } from '@/shared/lib/techniques/halftone'
+import { generateScanline } from '@/shared/lib/techniques/scanline'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
 import { TechniqueId } from '@/shared/constants/shared.constant'
 
@@ -74,6 +76,41 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
           minSize: config.minSize,
           maxSize: config.maxSize,
           layers: config.crosshatchLayers,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: 'strokes', items }, generation }
+      break
+    }
+
+    case TechniqueId.Halftone: {
+      const items = generateHalftone(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          minSize: config.minSize,
+          maxSize: config.maxSize,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: 'dots', items }, generation }
+      break
+    }
+
+    case TechniqueId.Scanline: {
+      const items = generateScanline(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          strokeLength: config.strokeLength,
+          minSize: config.minSize,
+          scanlineAmplitude: config.scanlineAmplitude,
         },
         brightnessMap,
         brightnessWidth,
