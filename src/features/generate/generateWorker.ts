@@ -4,6 +4,7 @@ import { generateContour } from '@/shared/lib/techniques/contour'
 import { generateCrosshatch } from '@/shared/lib/techniques/crosshatch'
 import { generateHalftone } from '@/shared/lib/techniques/halftone'
 import { generateScanline } from '@/shared/lib/techniques/scanline'
+import { generateFlowStrands } from '@/shared/lib/techniques/flowStrands'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
 import { TechniqueId } from '@/shared/constants/shared.constant'
 
@@ -117,6 +118,25 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessHeight
       )
       result = { payload: { type: 'strokes', items }, generation }
+      break
+    }
+
+    case TechniqueId.FlowStrands: {
+      const items = generateFlowStrands(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          strandLength: config.strandLength,
+          minSize: config.minSize,
+          maxSize: config.maxSize,
+          seed: config.seed,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: 'paths', items }, generation }
       break
     }
   }

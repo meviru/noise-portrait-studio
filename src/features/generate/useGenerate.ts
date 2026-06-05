@@ -110,6 +110,7 @@ export function useGenerate(): UseGenerateReturn {
           contourLevels: config.contourLevels,
           crosshatchLayers: config.crosshatchLayers,
           scanlineAmplitude: config.scanlineAmplitude,
+          strandLength: config.strandLength,
           seed: config.seed,
         },
         brightnessBuffer: bufferClone,

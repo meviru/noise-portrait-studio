@@ -12,6 +12,7 @@ export interface StrokeItem { x1: number; y1: number; x2: number; y2: number; we
 export type WorkerPayload =
   | { type: 'dots'; items: DotItem[] }
   | { type: 'strokes'; items: StrokeItem[] }
+  | { type: 'paths'; items: GeneratedPath[] }
 
 export interface WorkerRenderConfig {
   technique: TechniqueId
@@ -24,6 +25,7 @@ export interface WorkerRenderConfig {
   contourLevels: number
   crosshatchLayers: number
   scanlineAmplitude: number
+  strandLength: number
   seed: number
 }
 

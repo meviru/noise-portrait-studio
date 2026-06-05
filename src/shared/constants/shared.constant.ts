@@ -8,6 +8,7 @@ export enum TechniqueId {
   Crosshatch = 'crosshatch',
   Halftone = 'halftone',
   Scanline = 'scanline',
+  FlowStrands = 'flow-strands',
 }
 
 /**
@@ -68,6 +69,9 @@ export interface RenderConfig {
   // Scanline
   scanlineAmplitude: number // max vertical deflection in px
 
+  // Flow Strands
+  strandLength: number // integration steps per direction
+
   // Stipple randomness
   seed: number
 }
@@ -88,6 +92,7 @@ export const DEFAULT_RENDER_CONFIG: RenderConfig = {
   contourLevels: 8,
   crosshatchLayers: 2,
   scanlineAmplitude: 20,
+  strandLength: 60,
   seed: 4217,
 }
 
@@ -180,6 +185,20 @@ export const PRESETS: Preset[] = [
       strokeLength: 6,
       scanlineAmplitude: 22,
       opacity: 0.95,
+    },
+  },
+  {
+    id: TechniqueId.FlowStrands,
+    label: 'Flow Strands',
+    description: 'Curves flowing along brightness contours - pencil sketch look',
+    overrides: {
+      technique: TechniqueId.FlowStrands,
+      density: 400,
+      minSize: 0.7,
+      maxSize: 2.0,
+      strandLength: 80,
+      opacity: 0.85,
+      seed: 3141,
     },
   },
 ]

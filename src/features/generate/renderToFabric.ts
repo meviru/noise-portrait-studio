@@ -1,4 +1,4 @@
-import { Canvas, Circle, Line } from 'fabric'
+import { Canvas, Circle, Line, Polyline } from 'fabric'
 import { clamp } from '@/shared/lib/utils/clamp'
 import { mapRange } from '@/shared/lib/utils/mapRange'
 import { RENDER_BATCH_SIZE, PALETTES, CANVAS_WIDTH, CANVAS_HEIGHT } from '@/shared/constants/canvas.constants'
@@ -99,7 +99,7 @@ export async function renderToFabric(
       onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
       await new Promise<void>((r) => setTimeout(r, 0))
     }
-  } else {
+  } else if (payload.type === 'strokes') {
     for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
       const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
       for (const stroke of chunk) {
@@ -115,6 +115,33 @@ export async function renderToFabric(
             objectCaching: false,
             opacity: config.opacity,
             strokeLineCap: 'round',
+          })
+        )
+      }
+      onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
+      await new Promise<void>((r) => setTimeout(r, 0))
+    }
+  } else {
+    // paths — polylines for flow strands
+    for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
+      const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
+      for (const points of chunk) {
+        if (points.length < 2) continue
+        const mid = points[Math.floor(points.length / 2)] ?? points[0]!
+        const brightness = brightnessMap ? sampleAt(mid.x, mid.y, brightnessMap, mapWidth, mapHeight) : 0.5
+        const color = resolveColor(mid.x, mid.y, brightnessMap, rgbaMap, mapWidth, mapHeight, config)
+        const weight = mapRange(1 - brightness, 0, 1, config.minSize, config.maxSize)
+        canvas.add(
+          new Polyline(points, {
+            stroke: color,
+            strokeWidth: weight,
+            fill: '',
+            selectable: false,
+            evented: false,
+            objectCaching: false,
+            opacity: config.opacity,
+            strokeLineCap: 'round',
+            strokeLineJoin: 'round',
           })
         )
       }

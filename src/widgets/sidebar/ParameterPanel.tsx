@@ -13,36 +13,39 @@ export function ParameterPanel() {
   const setConfig = useStudioStore((s) => s.setConfig)
   const { technique } = config
 
-  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || technique === TechniqueId.Scanline
+  const isScanline = technique === TechniqueId.Scanline
+  const isFlowStrands = technique === TechniqueId.FlowStrands
+  const isDotTechnique = technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
+
+  const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || isScanline
   const showContourLevels = technique === TechniqueId.Contour
   const showCrosshatchLayers = technique === TechniqueId.Crosshatch
   const showDensity = technique !== TechniqueId.Contour
-  const showMaxSize = technique !== TechniqueId.Contour && technique !== TechniqueId.Scanline
-  const showScanlineAmplitude = technique === TechniqueId.Scanline
-  const showSeed = technique === TechniqueId.Stipple
-  const isScanline = technique === TechniqueId.Scanline
+  const showMaxSize = technique !== TechniqueId.Contour && !isScanline
+  const showScanlineAmplitude = isScanline
+  const showStrandLength = isFlowStrands
+  const showSeed = technique === TechniqueId.Stipple || isFlowStrands
+
+  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : 'Density'
+  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : 300
+  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : 4000
+  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : 100
 
   return (
     <div className="flex flex-col gap-3">
       {showDensity && (
         <Slider
-          label={isScanline ? 'Lines' : 'Density'}
-          min={isScanline ? 20 : 300}
-          max={isScanline ? 200 : 4000}
-          step={isScanline ? 5 : 100}
+          label={densityLabel}
+          min={densityMin}
+          max={densityMax}
+          step={densityStep}
           value={config.density}
           onChange={(v) => setConfig({ density: v })}
         />
       )}
 
       <Slider
-        label={
-          technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
-            ? 'Min Dot Size'
-            : technique === TechniqueId.Scanline
-              ? 'Line Weight'
-              : 'Min Weight'
-        }
+        label={isDotTechnique ? 'Min Dot Size' : isScanline ? 'Line Weight' : 'Min Weight'}
         min={0.3}
         max={3.0}
         step={0.1}
@@ -53,7 +56,7 @@ export function ParameterPanel() {
 
       {showMaxSize && (
         <Slider
-          label={technique === TechniqueId.Stipple || technique === TechniqueId.Halftone ? 'Max Dot Size' : 'Max Weight'}
+          label={isDotTechnique ? 'Max Dot Size' : 'Max Weight'}
           min={1.0}
           max={10.0}
           step={0.5}
@@ -94,6 +97,17 @@ export function ParameterPanel() {
           value={config.scanlineAmplitude}
           onChange={(v) => setConfig({ scanlineAmplitude: v })}
           formatValue={(v) => `${v}px`}
+        />
+      )}
+
+      {showStrandLength && (
+        <Slider
+          label="Strand Length"
+          min={20}
+          max={150}
+          step={10}
+          value={config.strandLength}
+          onChange={(v) => setConfig({ strandLength: v })}
         />
       )}
 
