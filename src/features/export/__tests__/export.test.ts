@@ -88,7 +88,7 @@ describe('exportPDF', () => {
 
   it('calls doc.save with the correct filename', async () => {
     await exportPDF(mockCanvas as never)
-    const instance = vi.mocked(jspdfModule.jsPDF).mock.instances[0] as { save: ReturnType<typeof vi.fn> }
+    const instance = vi.mocked(jspdfModule.jsPDF).mock.instances[0] as unknown as { save: ReturnType<typeof vi.fn> }
     expect(instance.save).toHaveBeenCalledWith('noise-portrait.pdf')
   })
 
