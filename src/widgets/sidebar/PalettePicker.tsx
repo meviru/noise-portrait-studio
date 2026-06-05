@@ -35,7 +35,7 @@ export function PalettePicker() {
             key={id}
             onClick={() => setConfig({ colorMode: id })}
             className={[
-              'flex-1 py-1 rounded text-[10px] font-medium tracking-wide transition-colors',
+              'flex-1 py-1 rounded text-[10px] font-medium tracking-wide transition-colors cursor-pointer',
               config.colorMode === id
                 ? 'bg-primary-700 text-white'
                 : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700',
@@ -55,7 +55,7 @@ export function PalettePicker() {
               aria-label={label}
               onClick={() => setConfig({ monoColor: hex })}
               className={[
-                'w-6 h-6 rounded-full transition-all border-2',
+                'w-6 h-6 rounded-full transition-all border-2 cursor-pointer',
                 config.monoColor === hex
                   ? 'border-white scale-110'
                   : 'border-neutral-700 hover:scale-110',
@@ -78,7 +78,7 @@ export function PalettePicker() {
                 aria-label={label}
                 onClick={() => setConfig({ paletteIndex: i })}
                 className={[
-                  'w-6 h-6 rounded-full transition-all',
+                  'w-6 h-6 rounded-full transition-all cursor-pointer',
                   config.paletteIndex === i
                     ? 'ring-2 ring-white ring-offset-2 ring-offset-neutral-900'
                     : 'hover:scale-110',

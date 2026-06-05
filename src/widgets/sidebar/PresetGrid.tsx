@@ -13,7 +13,7 @@ export function PresetGrid() {
             key={preset.id}
             onClick={() => activatePreset(preset.id)}
             className={[
-              'flex flex-col gap-0.5 p-2 rounded text-left transition-colors',
+              'flex flex-col gap-0.5 p-2 rounded text-left transition-colors cursor-pointer',
               isActive
                 ? 'bg-primary-950 border border-primary-600'
                 : 'bg-neutral-800 border border-neutral-700 hover:border-neutral-600',

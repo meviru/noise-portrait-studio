@@ -56,7 +56,7 @@ export function MobileNav() {
             </span>
             <button
               onClick={() => setActiveTab(null)}
-              className="text-neutral-500 hover:text-neutral-300 transition-colors p-0.5"
+              className="text-neutral-500 hover:text-neutral-300 transition-colors p-0.5 cursor-pointer"
               aria-label="Close panel"
             >
               <IconX size={16} aria-hidden="true" />
@@ -77,7 +77,7 @@ export function MobileNav() {
                   {error && (
                     <button
                       onClick={clearError}
-                      className="text-[10px] text-neutral-600 underline text-left"
+                      className="text-[10px] text-neutral-600 underline text-left cursor-pointer"
                     >
                       Dismiss
                     </button>
@@ -99,7 +99,7 @@ export function MobileNav() {
             key={id}
             onClick={() => handleTabPress(id)}
             aria-pressed={activeTab === id}
-            className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors ${
+            className={`flex-1 flex flex-col items-center justify-center gap-1 transition-colors cursor-pointer ${
               activeTab === id ? 'text-primary-400' : 'text-neutral-500 hover:text-neutral-300'
             }`}
           >

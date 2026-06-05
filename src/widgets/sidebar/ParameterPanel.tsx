@@ -92,7 +92,7 @@ export function ParameterPanel() {
                 key={n}
                 onClick={() => setConfig({ crosshatchLayers: n })}
                 className={[
-                  'flex-1 py-1 rounded text-xs font-medium transition-colors',
+                  'flex-1 py-1 rounded text-xs font-medium transition-colors cursor-pointer',
                   config.crosshatchLayers === n
                     ? 'bg-primary-700 text-white'
                     : 'bg-neutral-800 text-neutral-400 hover:bg-neutral-700',

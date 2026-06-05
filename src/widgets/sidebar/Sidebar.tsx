@@ -34,7 +34,7 @@ export function Sidebar() {
             imageDataURL={imageDataURL}
           />
           {error && (
-            <button onClick={clearError} className="text-[10px] text-neutral-600 underline text-left">
+            <button onClick={clearError} className="text-[10px] text-neutral-600 underline text-left cursor-pointer">
               Dismiss
             </button>
           )}

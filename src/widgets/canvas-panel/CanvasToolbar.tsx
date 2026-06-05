@@ -114,7 +114,7 @@ export function CanvasToolbar({
                 <button
                   key={fmt}
                   onClick={() => handleExport(fmt)}
-                  className="w-full flex items-center gap-2 px-3 py-2 text-left text-xs text-neutral-200 hover:bg-neutral-700 transition-colors"
+                  className="w-full flex items-center gap-2 px-3 py-2 text-left text-xs text-neutral-200 hover:bg-neutral-700 transition-colors cursor-pointer"
                 >
                   {STRINGS.export[fmt]}
                 </button>
@@ -126,7 +126,7 @@ export function CanvasToolbar({
                   </p>
                   <button
                     onClick={clearExportError}
-                    className="text-[10px] text-neutral-600 underline"
+                    className="text-[10px] text-neutral-600 underline cursor-pointer"
                   >
                     Dismiss
                   </button>
