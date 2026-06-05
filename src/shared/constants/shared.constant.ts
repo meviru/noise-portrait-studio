@@ -10,6 +10,7 @@ export enum TechniqueId {
   Scanline = 'scanline',
   FlowStrands = 'flow-strands',
   ConcentricRings = 'concentric-rings',
+  LowPoly = 'low-poly',
 }
 
 /**
@@ -212,6 +213,17 @@ export const PRESETS: Preset[] = [
       minSize: 0.3,
       maxSize: 4.5,
       opacity: 0.9,
+    },
+  },
+  {
+    id: TechniqueId.LowPoly,
+    label: 'Low Poly',
+    description: 'Delaunay triangles — faceted crystal portrait with finer detail at edges',
+    overrides: {
+      technique: TechniqueId.LowPoly,
+      density: 600,
+      opacity: 1.0,
+      seed: 4217,
     },
   },
 ]

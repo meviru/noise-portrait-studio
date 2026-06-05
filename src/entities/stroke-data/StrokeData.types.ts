@@ -8,11 +8,17 @@ export type GeneratedPath = PathPoint[]
 // New output types for image-driven techniques
 export interface DotItem { x: number; y: number; r: number }
 export interface StrokeItem { x1: number; y1: number; x2: number; y2: number; weight: number }
+export interface TriangleItem {
+  a: { x: number; y: number }
+  b: { x: number; y: number }
+  c: { x: number; y: number }
+}
 
 export type WorkerPayload =
   | { type: 'dots'; items: DotItem[] }
   | { type: 'strokes'; items: StrokeItem[] }
   | { type: 'paths'; items: GeneratedPath[] }
+  | { type: 'polys'; items: TriangleItem[] }
 
 export interface WorkerRenderConfig {
   technique: TechniqueId

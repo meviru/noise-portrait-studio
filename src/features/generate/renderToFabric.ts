@@ -1,4 +1,4 @@
-import { Canvas, Circle, Line, Polyline } from 'fabric'
+import { Canvas, Circle, Line, Polyline, Polygon } from 'fabric'
 import { clamp } from '@/shared/lib/utils/clamp'
 import { mapRange } from '@/shared/lib/utils/mapRange'
 import { RENDER_BATCH_SIZE, PALETTES, CANVAS_WIDTH, CANVAS_HEIGHT } from '@/shared/constants/canvas.constants'
@@ -115,6 +115,45 @@ export async function renderToFabric(
             objectCaching: false,
             opacity: config.opacity,
             strokeLineCap: 'round',
+          })
+        )
+      }
+      onProgress(Math.round(((i + RENDER_BATCH_SIZE) / total) * 100))
+      await new Promise<void>((r) => setTimeout(r, 0))
+    }
+  } else if (payload.type === 'polys') {
+    for (let i = 0; i < total; i += RENDER_BATCH_SIZE) {
+      const chunk = payload.items.slice(i, i + RENDER_BATCH_SIZE)
+      for (const tri of chunk) {
+        const cx = (tri.a.x + tri.b.x + tri.c.x) / 3
+        const cy = (tri.a.y + tri.b.y + tri.c.y) / 3
+        const brightness = brightnessMap ? sampleAt(cx, cy, brightnessMap, mapWidth, mapHeight) : 0.5
+
+        let fill: string
+        if (config.colorMode === ColorMode.Mono) {
+          // Lerp between background shade and monoColor driven by brightness:
+          // dark pixels → monoColor, bright pixels → background
+          const hex = config.monoColor.replace('#', '')
+          const mr = parseInt(hex.slice(0, 2), 16)
+          const mg = parseInt(hex.slice(2, 4), 16)
+          const mb = parseInt(hex.slice(4, 6), 16)
+          const lum = (0.2126 * mr + 0.7152 * mg + 0.0722 * mb) / 255
+          const bgV = lum > 0.5 ? 17 : 245 // matches getBgColor logic
+          const t = 1 - brightness
+          fill = `rgb(${Math.round(bgV + (mr - bgV) * t)},${Math.round(bgV + (mg - bgV) * t)},${Math.round(bgV + (mb - bgV) * t)})`
+        } else {
+          fill = resolveColor(cx, cy, brightnessMap, rgbaMap, mapWidth, mapHeight, config)
+        }
+
+        canvas.add(
+          new Polygon([tri.a, tri.b, tri.c], {
+            fill,
+            stroke: fill, // hair-thin same-color stroke closes sub-pixel gaps between triangles
+            strokeWidth: 0.5,
+            selectable: false,
+            evented: false,
+            objectCaching: false,
+            opacity: config.opacity,
           })
         )
       }

@@ -6,6 +6,7 @@ import { generateHalftone } from '@/shared/lib/techniques/halftone'
 import { generateScanline } from '@/shared/lib/techniques/scanline'
 import { generateFlowStrands } from '@/shared/lib/techniques/flowStrands'
 import { generateConcentricRings } from '@/shared/lib/techniques/concentricRings'
+import { generateLowPoly } from '@/shared/lib/techniques/lowPoly'
 import type { WorkerInput, WorkerResult } from '@/entities/stroke-data/StrokeData.types'
 import { TechniqueId } from '@/shared/constants/shared.constant'
 
@@ -136,6 +137,22 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessHeight
       )
       result = { payload: { type: 'strokes', items }, generation }
+      break
+    }
+
+    case TechniqueId.LowPoly: {
+      const items = generateLowPoly(
+        {
+          canvasWidth: config.canvasWidth,
+          canvasHeight: config.canvasHeight,
+          density: config.density,
+          seed: config.seed,
+        },
+        brightnessMap,
+        brightnessWidth,
+        brightnessHeight
+      )
+      result = { payload: { type: 'polys', items }, generation }
       break
     }
 

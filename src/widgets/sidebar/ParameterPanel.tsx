@@ -16,21 +16,23 @@ export function ParameterPanel() {
   const isScanline = technique === TechniqueId.Scanline
   const isFlowStrands = technique === TechniqueId.FlowStrands
   const isRings = technique === TechniqueId.ConcentricRings
+  const isLowPoly = technique === TechniqueId.LowPoly
   const isDotTechnique = technique === TechniqueId.Stipple || technique === TechniqueId.Halftone
 
   const showStrokeLength = technique === TechniqueId.Hatch || technique === TechniqueId.Crosshatch || isScanline
   const showContourLevels = technique === TechniqueId.Contour
   const showCrosshatchLayers = technique === TechniqueId.Crosshatch
   const showDensity = technique !== TechniqueId.Contour
-  const showMaxSize = technique !== TechniqueId.Contour && !isScanline
+  const showSizeControls = !isLowPoly
+  const showMaxSize = technique !== TechniqueId.Contour && !isScanline && !isLowPoly
   const showScanlineAmplitude = isScanline
   const showStrandLength = isFlowStrands
-  const showSeed = technique === TechniqueId.Stipple || isFlowStrands
+  const showSeed = technique === TechniqueId.Stipple || isFlowStrands || isLowPoly
 
-  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : 'Density'
-  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : (isRings) ? 20 : 300
-  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : (isRings) ? 120 : 4000
-  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : (isRings) ? 5 : 100
+  const densityLabel = isScanline ? 'Lines' : isFlowStrands ? 'Strands' : isRings ? 'Rings' : isLowPoly ? 'Points' : 'Density'
+  const densityMin = isScanline ? 20 : isFlowStrands ? 100 : isRings ? 20 : isLowPoly ? 200 : 300
+  const densityMax = isScanline ? 200 : isFlowStrands ? 1000 : isRings ? 120 : isLowPoly ? 1500 : 4000
+  const densityStep = isScanline ? 5 : isFlowStrands ? 25 : isRings ? 5 : isLowPoly ? 50 : 100
 
   return (
     <div className="flex flex-col gap-3">
@@ -45,15 +47,17 @@ export function ParameterPanel() {
         />
       )}
 
-      <Slider
-        label={isDotTechnique ? 'Min Dot Size' : isScanline ? 'Line Weight' : 'Min Weight'}
-        min={0.3}
-        max={3.0}
-        step={0.1}
-        value={config.minSize}
-        onChange={(v) => setConfig({ minSize: v })}
-        formatValue={(v) => v.toFixed(1)}
-      />
+      {showSizeControls && (
+        <Slider
+          label={isDotTechnique ? 'Min Dot Size' : isScanline ? 'Line Weight' : 'Min Weight'}
+          min={0.3}
+          max={3.0}
+          step={0.1}
+          value={config.minSize}
+          onChange={(v) => setConfig({ minSize: v })}
+          formatValue={(v) => v.toFixed(1)}
+        />
+      )}
 
       {showMaxSize && (
         <Slider
