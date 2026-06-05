@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ProgressBar } from '@/shared/ui/ProgressBar'
-import { useStudioStore, selectRenderState, selectRenderProgress } from '@/app/store'
+import { useStudioStore, selectRenderState, selectRenderProgress, RenderState } from '@/app/store'
 import { STRINGS } from '@/shared/constants/strings'
 
 /**
@@ -10,7 +10,7 @@ export function CanvasOverlay() {
   const renderState = useStudioStore(selectRenderState)
   const progress = useStudioStore(selectRenderProgress)
 
-  const isActive = renderState === 'computing' || renderState === 'rendering'
+  const isActive = renderState === RenderState.Computing || renderState === RenderState.Rendering
   const statusText = STRINGS.renderState[renderState]
 
   return (
@@ -18,7 +18,7 @@ export function CanvasOverlay() {
       <ProgressBar value={progress} visible={isActive} />
 
       <AnimatePresence>
-        {renderState === 'error' && (
+        {renderState === RenderState.Error && (
           <motion.div
             key="error-overlay"
             initial={{ opacity: 0 }}
@@ -32,7 +32,7 @@ export function CanvasOverlay() {
       </AnimatePresence>
 
       <AnimatePresence>
-        {renderState !== 'idle' && (
+        {renderState !== RenderState.Idle && (
           <motion.div
             key="status-badge"
             initial={{ opacity: 0, y: 4 }}

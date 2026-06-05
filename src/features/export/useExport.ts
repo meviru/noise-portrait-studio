@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import type { MutableRefObject } from 'react'
-import { useStudioStore, selectRenderState } from '@/app/store'
+import { useStudioStore, selectRenderState, RenderState } from '@/app/store'
 import { exportSVG } from './exportSVG'
 import { exportPNG } from './exportPNG'
 import { exportPDF } from './exportPDF'
@@ -30,7 +30,7 @@ export function useExport(): UseExportReturn {
    */
   const exportCanvas = useCallback(
     async (format: ExportFormat, canvasRef: MutableRefObject<Canvas | null>) => {
-      if (renderState !== 'done') return
+      if (renderState !== RenderState.Done) return
       if (!canvasRef.current) return
 
       setIsExporting(true)

@@ -1,4 +1,4 @@
-import { selectConfig, selectRenderState, useStudioStore } from '@/app/store'
+import { selectConfig, selectRenderState, useStudioStore, RenderState } from '@/app/store'
 import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
 import { useExport } from '@/features/export/useExport'
 import { STRINGS } from '@/shared/constants/strings'
@@ -44,11 +44,11 @@ export function CanvasToolbar({
   /**
    * True when a completed render is available for export.
    */
-  const canExport = renderState === 'done'
+  const canExport = renderState === RenderState.Done
   /**
    * True while the worker is still computing or rendering.
    */
-  const isComputing = renderState === 'computing' || renderState === 'rendering'
+  const isComputing = renderState === RenderState.Computing || renderState === RenderState.Rendering
 
   useEffect(() => {
     if (!isExportOpen) return
@@ -159,13 +159,13 @@ export function CanvasToolbar({
           </Button>
         ) : (
           <Button size="sm" onClick={onGenerate} disabled={!hasImage}>
-            {renderState === 'done' ? (
+            {renderState === RenderState.Done ? (
               <IconRefresh size={14} aria-hidden="true" />
             ) : (
               <IconSparkles size={14} aria-hidden="true" />
             )}
             <span className="ml-1.5">
-              {renderState === 'done' ? STRINGS.generate.rerender : STRINGS.generate.button}
+              {renderState === RenderState.Done ? STRINGS.generate.rerender : STRINGS.generate.button}
             </span>
           </Button>
         )}

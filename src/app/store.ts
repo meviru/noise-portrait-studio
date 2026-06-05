@@ -2,8 +2,9 @@ import { create } from 'zustand'
 import { immer } from 'zustand/middleware/immer'
 import { DEFAULT_RENDER_CONFIG } from '@/entities/noise-config/NoiseConfig.defaults'
 import type { RenderConfig, TechniqueId } from '@/entities/noise-config/NoiseConfig.types'
+import { RenderState } from './utility/constants/studio.constant'
 
-export type RenderState = 'idle' | 'computing' | 'rendering' | 'done' | 'error'
+export { RenderState }
 
 interface StudioStore {
   // Image slice
@@ -80,7 +81,7 @@ export const useStudioStore = create<StudioStore>()(
         state.activePreset = id
       }),
 
-    renderState: 'idle',
+    renderState: RenderState.Idle,
     renderProgress: 0,
     setRenderState: (s) =>
       set((state) => {

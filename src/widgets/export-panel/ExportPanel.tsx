@@ -1,7 +1,7 @@
 import type { MutableRefObject } from 'react'
 import type { Canvas } from 'fabric'
 import { Button } from '@/shared/ui/Button'
-import { useStudioStore, selectRenderState } from '@/app/store'
+import { useStudioStore, selectRenderState, RenderState } from '@/app/store'
 import { useExport } from '@/features/export/useExport'
 import { STRINGS } from '@/shared/constants/strings'
 import type { ExportFormat } from '@/entities/export-options/ExportOptions.types'
@@ -12,7 +12,7 @@ interface ExportPanelProps {
 
 export function ExportPanel({ canvasRef }: ExportPanelProps) {
   const renderState = useStudioStore(selectRenderState)
-  const canExport = renderState === 'done'
+  const canExport = renderState === RenderState.Done
   const { exportCanvas, isExporting, exportError, clearExportError } = useExport()
 
   return (

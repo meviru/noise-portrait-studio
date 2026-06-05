@@ -7,6 +7,7 @@ import {
   selectRgbaMap,
   selectBrightnessWidth,
   selectBrightnessHeight,
+  RenderState,
 } from '@/app/store'
 import { renderToFabric } from './renderToFabric'
 import { CANVAS_WIDTH, CANVAS_HEIGHT } from '@/shared/constants/canvas.constants'
@@ -62,7 +63,7 @@ export function useGenerate(): UseGenerateReturn {
       if (!brightnessMap || !canvasRef.current) return
 
       const myGeneration = ++generationRef.current
-      setRenderState('computing')
+      setRenderState(RenderState.Computing)
       setRenderProgress(0)
 
       const worker = getWorker()
@@ -70,7 +71,7 @@ export function useGenerate(): UseGenerateReturn {
       worker.onmessage = async (e: MessageEvent<WorkerResult>) => {
         if (e.data.generation !== generationRef.current) return
 
-        setRenderState('rendering')
+        setRenderState(RenderState.Rendering)
 
         try {
           await renderToFabric(
@@ -83,16 +84,16 @@ export function useGenerate(): UseGenerateReturn {
             brightnessHeight,
             (pct) => setRenderProgress(pct)
           )
-          setRenderState('done')
+          setRenderState(RenderState.Done)
         } catch (err) {
           if (import.meta.env.DEV) console.error('[renderToFabric error]', err)
-          setRenderState('error')
+          setRenderState(RenderState.Error)
         }
       }
 
       worker.onerror = (e: ErrorEvent) => {
         if (import.meta.env.DEV) console.error('[Worker error]', e.message)
-        setRenderState('error')
+        setRenderState(RenderState.Error)
       }
 
       const bufferClone = brightnessMap.buffer.slice(0) as ArrayBuffer
@@ -120,7 +121,7 @@ export function useGenerate(): UseGenerateReturn {
         worker.postMessage(message, [bufferClone])
       } catch (err) {
         if (import.meta.env.DEV) console.error('[Worker postMessage error]', err)
-        setRenderState('error')
+        setRenderState(RenderState.Error)
       }
     },
     [config, brightnessMap, rgbaMap, brightnessWidth, brightnessHeight, setRenderState, setRenderProgress]
@@ -131,7 +132,7 @@ export function useGenerate(): UseGenerateReturn {
    */
   const cancel = useCallback(() => {
     generationRef.current++
-    setRenderState('idle')
+    setRenderState(RenderState.Idle)
     setRenderProgress(0)
   }, [setRenderState, setRenderProgress])
 
