@@ -64,4 +64,6 @@ SVG output is native Fabric.js, opens in Illustrator, Inkscape, or anything else
 
 ---
 
-MIT
+## License
+
+MIT. Do whatever you want with it. See [LICENSE](LICENSE) for the legal text.
