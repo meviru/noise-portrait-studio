@@ -13,10 +13,16 @@ function sampleAt(
   mapWidth: number,
   mapHeight: number
 ): number {
-  const mx = Math.round((x / CANVAS_WIDTH) * (mapWidth - 1))
-  const my = Math.round((y / CANVAS_HEIGHT) * (mapHeight - 1))
-  const idx = clamp(my, 0, mapHeight - 1) * mapWidth + clamp(mx, 0, mapWidth - 1)
-  return map[idx] ?? 0.5
+  const fx = (x / CANVAS_WIDTH) * (mapWidth - 1)
+  const fy = (y / CANVAS_HEIGHT) * (mapHeight - 1)
+  const x0 = clamp(Math.floor(fx), 0, mapWidth - 1)
+  const x1 = clamp(x0 + 1, 0, mapWidth - 1)
+  const y0 = clamp(Math.floor(fy), 0, mapHeight - 1)
+  const y1 = clamp(y0 + 1, 0, mapHeight - 1)
+  const tx = fx - x0, ty = fy - y0
+  const top = (map[y0 * mapWidth + x0] ?? 0.5) * (1 - tx) + (map[y0 * mapWidth + x1] ?? 0.5) * tx
+  const bot = (map[y1 * mapWidth + x0] ?? 0.5) * (1 - tx) + (map[y1 * mapWidth + x1] ?? 0.5) * tx
+  return top * (1 - ty) + bot * ty
 }
 
 function resolveColor(
@@ -34,10 +40,30 @@ function resolveColor(
 
     case ColorMode.Photo: {
       if (!rgbaMap) return config.monoColor
-      const mx = Math.round((x / CANVAS_WIDTH) * (mapWidth - 1))
-      const my = Math.round((y / CANVAS_HEIGHT) * (mapHeight - 1))
-      const i = (clamp(my, 0, mapHeight - 1) * mapWidth + clamp(mx, 0, mapWidth - 1)) * 4
-      return `rgb(${rgbaMap[i] ?? 0},${rgbaMap[i + 1] ?? 0},${rgbaMap[i + 2] ?? 0})`
+      const fx = (x / CANVAS_WIDTH) * (mapWidth - 1)
+      const fy = (y / CANVAS_HEIGHT) * (mapHeight - 1)
+      const x0 = clamp(Math.floor(fx), 0, mapWidth - 1)
+      const x1 = clamp(x0 + 1, 0, mapWidth - 1)
+      const y0 = clamp(Math.floor(fy), 0, mapHeight - 1)
+      const y1 = clamp(y0 + 1, 0, mapHeight - 1)
+      const tx = fx - x0, ty = fy - y0
+      const lerp = (a: number, b: number, t: number) => Math.round(a + (b - a) * t)
+      const r = lerp(
+        lerp(rgbaMap[y0 * mapWidth * 4 + x0 * 4] ?? 0, rgbaMap[y0 * mapWidth * 4 + x1 * 4] ?? 0, tx),
+        lerp(rgbaMap[y1 * mapWidth * 4 + x0 * 4] ?? 0, rgbaMap[y1 * mapWidth * 4 + x1 * 4] ?? 0, tx),
+        ty
+      )
+      const g = lerp(
+        lerp(rgbaMap[y0 * mapWidth * 4 + x0 * 4 + 1] ?? 0, rgbaMap[y0 * mapWidth * 4 + x1 * 4 + 1] ?? 0, tx),
+        lerp(rgbaMap[y1 * mapWidth * 4 + x0 * 4 + 1] ?? 0, rgbaMap[y1 * mapWidth * 4 + x1 * 4 + 1] ?? 0, tx),
+        ty
+      )
+      const b = lerp(
+        lerp(rgbaMap[y0 * mapWidth * 4 + x0 * 4 + 2] ?? 0, rgbaMap[y0 * mapWidth * 4 + x1 * 4 + 2] ?? 0, tx),
+        lerp(rgbaMap[y1 * mapWidth * 4 + x0 * 4 + 2] ?? 0, rgbaMap[y1 * mapWidth * 4 + x1 * 4 + 2] ?? 0, tx),
+        ty
+      )
+      return `rgb(${r},${g},${b})`
     }
 
     case ColorMode.Palette: {

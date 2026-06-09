@@ -12,14 +12,16 @@ export interface HalftoneConfig {
 }
 
 /**
- * Generates a staggered hexagonal dot grid where each dot's radius is proportional
- * to local darkness, producing a classic offset-print / CMYK halftone look.
+ * Generates a halftone dot grid at a 45° screen angle.
+ * The diagonal orientation prevents moiré patterns and gives the output an
+ * authentic offset-print character. Each dot's radius is proportional to
+ * local darkness; dots below the minimum visible size are omitted.
  *
  * @param config - Halftone generation parameters
  * @param brightnessMap - Packed [0,1] brightness values in row-major order
  * @param mapWidth - Width of the brightness map in pixels
  * @param mapHeight - Height of the brightness map in pixels
- * @returns Array of dot positions and radii; near-invisible dots (r < 0.1) are omitted
+ * @returns Array of dot positions and radii
  */
 export function generateHalftone(
   config: HalftoneConfig,
@@ -29,18 +31,35 @@ export function generateHalftone(
 ): DotItem[] {
   const dots: DotItem[] = []
   const gridSize = Math.sqrt((config.canvasWidth * config.canvasHeight) / config.density)
-  const rows = Math.ceil(config.canvasHeight / gridSize) + 1
-  const cols = Math.ceil(config.canvasWidth / gridSize) + 1
 
-  for (let row = 0; row < rows; row++) {
-    const cy = (row + 0.5) * gridSize
-    // Stagger every other row by half a cell for a hexagonal grid
-    const xOffset = (row % 2) * (gridSize / 2)
+  // 45° screen angle — standard mono halftone rotation
+  const ANGLE = Math.PI / 4
+  const cosA = Math.cos(ANGLE)
+  const sinA = Math.sin(ANGLE)
+  const cx0 = config.canvasWidth / 2
+  const cy0 = config.canvasHeight / 2
 
-    for (let col = 0; col < cols; col++) {
-      const cx = col * gridSize + xOffset
+  // Span large enough so the rotated grid covers every canvas corner
+  const span = Math.ceil(
+    Math.sqrt(config.canvasWidth ** 2 + config.canvasHeight ** 2) / gridSize
+  ) + 2
 
-      if (cx > config.canvasWidth + gridSize / 2) continue
+  for (let row = -span; row <= span; row++) {
+    // Stagger alternating rows by half a cell (hexagonal packing)
+    const stagger = (((row % 2) + 2) % 2) * (gridSize / 2)
+
+    for (let col = -span; col <= span; col++) {
+      // Grid-space position (unrotated)
+      const gx = col * gridSize + stagger
+      const gy = row * gridSize
+
+      // Rotate into canvas space around the canvas centre
+      const cx = cx0 + gx * cosA - gy * sinA
+      const cy = cy0 + gx * sinA + gy * cosA
+
+      // Skip dots that fall outside the canvas (with one cell of slack)
+      if (cx < -gridSize || cx > config.canvasWidth + gridSize) continue
+      if (cy < -gridSize || cy > config.canvasHeight + gridSize) continue
 
       const brightness = sampleBrightness(
         cx, cy,

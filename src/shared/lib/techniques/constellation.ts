@@ -1,6 +1,7 @@
 import { seededRandom } from '@/shared/lib/utils/seededRandom'
 import { clamp } from '@/shared/lib/utils/clamp'
 import { mapRange } from '@/shared/lib/utils/mapRange'
+import { poissonDisk } from '@/shared/lib/utils/poissonDisk'
 import { sampleBrightness } from './imageUtils'
 import { triangulate } from './lowPoly'
 import type { Pt } from './lowPoly'
@@ -28,18 +29,29 @@ export function generateConstellation(
 ): ConstellationResult {
   const rand = seededRandom(config.seed)
 
-  // ── Sample seed points biased toward darker areas ────────────────────────
-  const pts: Pt[] = []
-  const maxAttempts = config.density * 6
+  // ── Sample seed points biased toward darker areas (Poisson-disk) ────────────
+  // minDist sized so the disk fills ~3× density candidates before filtering,
+  // matching the approach used in stipple for even spatial coverage.
+  const minDist = Math.sqrt(
+    (config.canvasWidth * config.canvasHeight) / (config.density * 3)
+  )
 
-  for (let attempt = 0; pts.length < config.density && attempt < maxAttempts; attempt++) {
-    const x = rand() * config.canvasWidth
-    const y = rand() * config.canvasHeight
+  const candidates = poissonDisk(
+    config.canvasWidth,
+    config.canvasHeight,
+    minDist,
+    config.density * 4,
+    rand
+  )
+
+  const pts: Pt[] = []
+  for (const { x, y } of candidates) {
+    if (pts.length >= config.density) break
     const brightness = sampleBrightness(
       x, y, brightnessMap, mapWidth, mapHeight,
       config.canvasWidth, config.canvasHeight
     )
-    // Accept with higher probability in darker regions
+    // Accept with higher probability in darker regions (same rule as before)
     if (rand() < (1 - brightness * 0.7)) pts.push({ x, y })
   }
 
@@ -50,7 +62,6 @@ export function generateConstellation(
 
   for (const tri of tris) {
     for (const [a, b] of [[tri.a, tri.b], [tri.b, tri.c], [tri.c, tri.a]] as [Pt, Pt][]) {
-      // Canonical key so each edge is only added once
       const key = a.x < b.x || (a.x === b.x && a.y < b.y)
         ? `${a.x},${a.y},${b.x},${b.y}`
         : `${b.x},${b.y},${a.x},${a.y}`
@@ -63,7 +74,6 @@ export function generateConstellation(
         mx, my, brightnessMap, mapWidth, mapHeight,
         config.canvasWidth, config.canvasHeight
       )
-      // Fade edges out in bright highlight areas
       if (brightness > 0.92) continue
 
       const weight = mapRange(1 - brightness, 0, 1, 0.2, 0.6)
@@ -77,12 +87,10 @@ export function generateConstellation(
       x, y, brightnessMap, mapWidth, mapHeight,
       config.canvasWidth, config.canvasHeight
     )
-    const r = mapRange(
-      clamp(1 - brightness, 0, 1),
-      0, 1,
-      config.minSize, config.maxSize
-    )
-    return { x, y, r }
+    return {
+      x, y,
+      r: mapRange(clamp(1 - brightness, 0, 1), 0, 1, config.minSize, config.maxSize),
+    }
   })
 
   return { dots, edges }

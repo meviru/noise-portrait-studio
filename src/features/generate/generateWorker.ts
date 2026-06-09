@@ -184,6 +184,9 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         canvasWidth: config.canvasWidth,
         canvasHeight: config.canvasHeight,
         density: config.density,
+        brightnessMap,
+        mapWidth: brightnessWidth,
+        mapHeight: brightnessHeight,
       })
       result = { payload: { type: PayloadType.Rects, items }, generation }
       break
