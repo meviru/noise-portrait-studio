@@ -1,6 +1,6 @@
 export const CANVAS_WIDTH = 800
 export const CANVAS_HEIGHT = 800
-export const MAX_SAMPLE_SIZE = 800
+export const MAX_SAMPLE_SIZE = 1600
 export const MAX_PARTICLE_COUNT = 5000
 export const MIN_PARTICLE_COUNT = 100
 export const RENDER_BATCH_SIZE = 50
