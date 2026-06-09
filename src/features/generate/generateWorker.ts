@@ -69,7 +69,7 @@ self.onmessage = (e: MessageEvent<WorkerInput>) => {
         brightnessWidth,
         brightnessHeight
       )
-      result = { payload: { type: PayloadType.Strokes, items }, generation }
+      result = { payload: { type: PayloadType.Paths, items }, generation }
       break
     }
 
