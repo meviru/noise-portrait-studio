@@ -1,4 +1,5 @@
-import { sampleBrightness } from './imageUtils'
+import { sampleBrightness, sobelGradient } from './imageUtils'
+import { clamp } from '@/shared/lib/utils/clamp'
 import type { StrokeItem } from '@/entities/stroke-data/StrokeData.types'
 
 /** Configuration for scanline generation. */
@@ -34,6 +35,8 @@ export function generateScanline(
   // Segment width controls horizontal resolution; smaller = smoother wave
   const segW = Math.max(2, config.strokeLength)
 
+  const { dx, dy } = sobelGradient(brightnessMap, mapWidth, mapHeight)
+
   for (let lineIdx = 0; lineIdx < numLines; lineIdx++) {
     const baseY = (lineIdx + 0.5) * lineSpacing
 
@@ -44,9 +47,17 @@ export function generateScanline(
       const b1 = sampleBrightness(x1, baseY, brightnessMap, mapWidth, mapHeight, config.canvasWidth, config.canvasHeight)
       const b2 = sampleBrightness(x2, baseY, brightnessMap, mapWidth, mapHeight, config.canvasWidth, config.canvasHeight)
 
+      // Sample edge strength at segment midpoint to boost deflection near facial features
+      const mx = clamp(Math.round(((x1 + x2) / 2 / config.canvasWidth) * (mapWidth - 1)), 0, mapWidth - 1)
+      const my = clamp(Math.round((baseY / config.canvasHeight) * (mapHeight - 1)), 0, mapHeight - 1)
+      const mi = my * mapWidth + mx
+      const edgeStrength = Math.min(1, Math.sqrt((dx[mi] ?? 0) ** 2 + (dy[mi] ?? 0) ** 2) * 3)
+      // Strong edges (jaw, eyes, lips) get extra deflection so features read clearly
+      const localAmplitude = config.scanlineAmplitude * (1 + edgeStrength * 0.5)
+
       // Dark pixels deflect lines upward; bright pixels stay near the baseline
-      const y1 = baseY - (1 - b1) * config.scanlineAmplitude
-      const y2 = baseY - (1 - b2) * config.scanlineAmplitude
+      const y1 = baseY - (1 - b1) * localAmplitude
+      const y2 = baseY - (1 - b2) * localAmplitude
 
       strokes.push({ x1, y1, x2, y2, weight: config.minSize })
     }

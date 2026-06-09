@@ -63,8 +63,9 @@ export function generatePainterly(
       // Shorter strokes at strong edges (detail), longer in flat zones (broad sweep)
       const len = mapRange(clamp(gradMag, 0, 1), 0, 1, config.strokeLength, config.strokeLength * 0.25)
 
-      // Thicker strokes in dark areas, finer in mid-tones
-      const weight = mapRange(1 - brightness, 0, 1, config.minSize, config.maxSize)
+      // Thicker strokes in dark flat areas, fine precise strokes near edges
+      const maxW = mapRange(clamp(gradMag, 0, 1), 0, 1, config.maxSize, config.minSize * 1.5)
+      const weight = mapRange(1 - brightness, 0, 1, config.minSize, maxW)
 
       const half = len / 2
       strokes.push({

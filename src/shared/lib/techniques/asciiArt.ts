@@ -1,7 +1,7 @@
 import { sampleBrightness } from './imageUtils'
 import type { CharItem } from '@/entities/stroke-data/StrokeData.types'
 
-const CHAR_RAMP = ' .:-=+*#%@'
+const CHAR_RAMP = ' .,:;+i!|1tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$'
 const CHAR_ASPECT = 0.55 // monospace char width / height
 
 /** Configuration for ASCII art character generation. */

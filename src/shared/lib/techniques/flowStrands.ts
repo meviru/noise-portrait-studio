@@ -15,6 +15,7 @@ export interface FlowStrandsConfig {
 }
 
 const STEP_SIZE = 3 // canvas-px per integration step
+const EDGE_MARGIN = STEP_SIZE * 5 // strands stop before the hard canvas boundary
 
 /**
  * Generates paths that flow along iso-brightness contours by integrating the
@@ -51,7 +52,8 @@ export function generateFlowStrands(
   }
 
   function inBounds(x: number, y: number): boolean {
-    return x >= 0 && x <= config.canvasWidth && y >= 0 && y <= config.canvasHeight
+    return x >= EDGE_MARGIN && x <= config.canvasWidth - EDGE_MARGIN
+        && y >= EDGE_MARGIN && y <= config.canvasHeight - EDGE_MARGIN
   }
 
   for (let attempts = 0; paths.length < config.density && attempts < maxAttempts; attempts++) {

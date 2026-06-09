@@ -21,10 +21,17 @@ export function sampleBrightness(
   canvasWidth: number,
   canvasHeight: number
 ): number {
-  const mx = Math.round((x / canvasWidth) * (mapWidth - 1))
-  const my = Math.round((y / canvasHeight) * (mapHeight - 1))
-  const idx = clamp(my, 0, mapHeight - 1) * mapWidth + clamp(mx, 0, mapWidth - 1)
-  return brightnessMap[idx] ?? 0.5
+  const fx = (x / canvasWidth) * (mapWidth - 1)
+  const fy = (y / canvasHeight) * (mapHeight - 1)
+  const x0 = clamp(Math.floor(fx), 0, mapWidth - 1)
+  const x1 = clamp(x0 + 1, 0, mapWidth - 1)
+  const y0 = clamp(Math.floor(fy), 0, mapHeight - 1)
+  const y1 = clamp(y0 + 1, 0, mapHeight - 1)
+  const tx = fx - x0
+  const ty = fy - y0
+  const top = (brightnessMap[y0 * mapWidth + x0] ?? 0.5) * (1 - tx) + (brightnessMap[y0 * mapWidth + x1] ?? 0.5) * tx
+  const bot = (brightnessMap[y1 * mapWidth + x0] ?? 0.5) * (1 - tx) + (brightnessMap[y1 * mapWidth + x1] ?? 0.5) * tx
+  return top * (1 - ty) + bot * ty
 }
 
 /**
